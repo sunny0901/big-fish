@@ -15,9 +15,7 @@ const styles = {
         padding: 0,
     },
     line: {
-        borderBottomStyle: 'solid',
-        borderBottomWidth: 1,
-        borderBottomColor: shellColor,
+        borderBottom: '1px solid' + shellColor,
         marginBottom: 16.5,
     }
 };
