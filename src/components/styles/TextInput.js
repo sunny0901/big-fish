@@ -1,6 +1,6 @@
 import {
     shellColor,
-}from '../constants';
+}from '../../constants';
 
 const styles = {
     container: {

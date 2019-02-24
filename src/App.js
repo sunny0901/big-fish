@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import styles from './styles/App'
-import TextInput from './TextInput'
-import Button from './Button'
+import TextInput from './components/TextInput'
+import Button from './components/Button'
 
 class App extends Component {
   render() {

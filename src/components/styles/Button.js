@@ -1,6 +1,6 @@
 import {
     themeColor,
-}from '../constants';
+}from '../../constants';
 
 const styles = {
     button: {
