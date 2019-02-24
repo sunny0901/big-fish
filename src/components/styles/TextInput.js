@@ -19,7 +19,7 @@ const styles = {
         padding: 0,
     },
     line: {
-        borderBottom: '1px solid' + shellColor,
+        borderBottom: '1px solid',
     },
     err_mess: {
         fontSize: 12,

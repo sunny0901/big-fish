@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import styles from "./styles/TextInput";
+import Text from './Text'
 
 export default class TextInput extends Component {
 
@@ -13,9 +14,10 @@ export default class TextInput extends Component {
             <div style = {{...styles.container, ...style}}>
                 <div>
                     <input placeholder = {placeholder} style = {styles.input}/>
-                    <div style = {styles.line}></div>
+                    <div style = {styles.line}
+                    ></div>
                 </div>
-                <p style = {styles.err_mess}>error</p>
+                <Text >error</Text>
             </div>
         );
     }
