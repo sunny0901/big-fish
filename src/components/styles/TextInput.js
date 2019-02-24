@@ -1,10 +1,14 @@
 import {
-    shellColor,
+    shellColor, themeColor,
 }from '../../constants';
 
 const styles = {
     container: {
-
+        width: 386,
+        height: 51,
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'space-between',
     },
     input: {
         width: 386,
@@ -16,7 +20,11 @@ const styles = {
     },
     line: {
         borderBottom: '1px solid' + shellColor,
-        marginBottom: 16.5,
+    },
+    err_mess: {
+        fontSize: 12,
+        fontFamily: 'Roboto-Regular',
+        color: themeColor,
     }
 };
 

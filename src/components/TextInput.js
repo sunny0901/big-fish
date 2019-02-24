@@ -9,8 +9,11 @@ export default class TextInput extends Component {
     render() {
         return (
             <div style = {styles.container}>
-                <input placeholder = {this.props.placeholder} style = {styles.input}/>
-                <div style = {styles.line}></div>
+                <div>
+                    <input placeholder = {this.props.placeholder} style = {styles.input}/>
+                    <div style = {styles.line}></div>
+                </div>
+                <p style = {styles.err_mess}>error</p>
             </div>
         );
     }
