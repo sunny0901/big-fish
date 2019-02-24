@@ -2,15 +2,17 @@ import React, { Component } from 'react';
 import styles from "./styles/TextInput";
 
 export default class TextInput extends Component {
-    /*constructor (props){
-        super(props);
-    }*/
 
     render() {
+        const {
+            style,
+            placeholder,
+        } = this.props;
+
         return (
-            <div style = {styles.container}>
+            <div style = {{...styles.container, ...style}}>
                 <div>
-                    <input placeholder = {this.props.placeholder} style = {styles.input}/>
+                    <input placeholder = {placeholder} style = {styles.input}/>
                     <div style = {styles.line}></div>
                 </div>
                 <p style = {styles.err_mess}>error</p>
