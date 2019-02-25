@@ -17,7 +17,7 @@ export default class TextInput extends Component {
                     <div style = {styles.line}
                     ></div>
                 </div>
-                <Text >error</Text>
+                <Text type = 'xs err'>error</Text>
             </div>
         );
     }
