@@ -18,8 +18,8 @@ const styles = {
         outline: 'none',
         padding: 0,
     },
-    line: {
-        borderBottom: '1px solid',
+    line: (errMes) => {
+        return {borderBottom: '1px solid' + (errMes?  themeColor: shellColor)} ;
     },
     err_mess: {
         fontSize: 12,
