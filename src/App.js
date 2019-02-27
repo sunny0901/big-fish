@@ -2,6 +2,9 @@ import React, { Component } from 'react';
 import styles from './styles/App'
 import TextInput from './components/TextInput'
 import Button from './components/Button'
+import validate, {
+  isExist
+} from './utils/validations'
 
 class App extends Component {
 
@@ -22,14 +25,19 @@ class App extends Component {
 
   onChange = ({target: {value}}) =>{
     this.input_value = value;
+    if (value) {
+      this.setState({
+        errMes: ''
+      })
+    }
   }
 
   onSubmit = () =>{
-    console.log('aaa')
-    if (!this.input_value) {
-      this.setState ({
-        errMes: 'Required'
-      });
+    const emailErrMes = validate([isExist], this.input_value)
+    if (emailErrMes){
+      this.setState({
+        errMes: emailErrMes
+      })
     }
   }
 
@@ -38,7 +46,7 @@ class App extends Component {
       <div style = {styles.container}>
         <div style = {styles.panel}>
           <p style = {styles.logo}>BIG FISH</p>
-          <TextInput onChange = {this.onChange} onBlur = {this.onBlur} errMes = {this.state.errMes} style = {{marginBottom: 8}} placeholder = "Email" />
+          <TextInput errMes = {this.state.errMes} style = {{marginBottom: 8}} placeholder = "Email" />
           {/* <TextInput onBlur = {this.onBlur} errMes = {this.state.errMes} style = {{marginBottom: 8}} placeholder = "Password" />
           <TextInput onBlur = {this.onBlur} errMes = {this.state.errMes} style = {{marginBottom: 73}} placeholder = "Name" /> */}
           <Button onClick = {this.onSubmit} style = {{marginBottom: 52}} btnText = 'Signup' />
