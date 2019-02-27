@@ -12,10 +12,12 @@ export default class Button extends Component {
         const {
             style,
             btnText,
+            onClick,
         } = this.props;
 
         return (
             <button style = {{...styles.button, opacity: this.state.hovered? 0.5 : 1, ...style}}
+            onClick = {onClick}
             onMouseEnter = {() =>{
                 this.setState({hovered: true});
             }}
