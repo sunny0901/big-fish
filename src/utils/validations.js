@@ -1,5 +1,3 @@
-import { type } from "os";
-
 
 class Validation {
     constructor (name, rule, errMes){
@@ -8,7 +6,7 @@ class Validation {
         this.errMes = errMes
     }
 
-    check = (text = '') => {
+    check = text => {
         return this.rule(text);
     }
 }
@@ -49,7 +47,7 @@ export function isValidateLength(min_len, max_len) {
     )
   }
 
-export default function validate(validations, text = '') { //if no initial value, doesn't work
+export default function validate(validations, text) {
     const len = validations.length;
     for(let i = 0; i < len; i++) {
         if (!validations[i].check(text)) {
