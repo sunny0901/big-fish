@@ -3,40 +3,56 @@ import styles from './styles/App'
 import TextInput from './components/TextInput'
 import Button from './components/Button'
 import validate, {
-  isExist
+  isExist,
+  emailFormat,
+  uppercase,
+  lowercase,
+  passwordLength,
+  nameLength,
 } from './utils/validations'
 
 class App extends Component {
 
-  input_value = '';
-
   state = {
-      errMes: ''
+    emailErr: '',
+    passwordErr: '',
+    nameErr: '',
   }
 
-  onBlur = ({target: {value}}) =>{ //pass in event
+  input_value = {
+    email: '',
+    password: '',
+    name: ''
+  }
+
+  onBlur = ({target: {id, value}}) =>{ //pass in event
     //console.log('on Blur', value); //***event.target.value
     if (!value) {
       this.setState ({
-        errMes: 'Required'
+        [id + 'Err']: 'Required'
       });
     }
   }
 
-  onChange = ({target: {value}}) =>{
-    this.input_value = value;
+  onChange = ({target: {id, value}}) =>{
+    this.input_value[id] = value
     if (value) {
-      this.setState({
-        errMes: ''
-      })
+      this.setState ({
+        [id + 'Err']: ''
+      });
     }
   }
 
   onSubmit = () =>{
-    const emailErrMes = validate([isExist], this.input_value)
-    if (emailErrMes){
+    const emailErrMes = validate([isExist, emailFormat], this.input_value.email)
+    const passErrMes = validate([isExist, passwordLength, uppercase, lowercase], this.input_value.password)
+    const nameErrMes = validate([nameLength], this.input_value.name)
+
+    if (emailErrMes || passErrMes || nameErrMes){
       this.setState({
-        errMes: emailErrMes
+        emailErr: emailErrMes,
+        passwordErr: passErrMes,
+        nameErr: nameErrMes,
       })
     }
   }
@@ -46,9 +62,9 @@ class App extends Component {
       <div style = {styles.container}>
         <div style = {styles.panel}>
           <p style = {styles.logo}>BIG FISH</p>
-          <TextInput errMes = {this.state.errMes} style = {{marginBottom: 8}} placeholder = "Email" />
-          {/* <TextInput onBlur = {this.onBlur} errMes = {this.state.errMes} style = {{marginBottom: 8}} placeholder = "Password" />
-          <TextInput onBlur = {this.onBlur} errMes = {this.state.errMes} style = {{marginBottom: 73}} placeholder = "Name" /> */}
+          <TextInput id = {'email'} onBlur = {this.onBlur} onChange = {this.onChange} errMes = {this.state.emailErr} style = {{marginBottom: 8}} placeholder = "Email" />
+          <TextInput id = {'password'} onBlur = {this.onBlur} onChange = {this.onChange} errMes = {this.state.passwordErr} style = {{marginBottom: 8}} placeholder = "Password" />
+          <TextInput id = {'name'} onBlur = {this.onBlur} onChange = {this.onChange} errMes = {this.state.nameErr} style = {{marginBottom: 73}} placeholder = "Name" />
           <Button onClick = {this.onSubmit} style = {{marginBottom: 52}} btnText = 'Signup' />
           <div style = {styles.footer_container}>
             <div style = {styles.footer}>
