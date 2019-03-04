@@ -19,6 +19,10 @@
   padding: 0;
 }
 
+a {
+  text-decoration: none;
+}
+
 button {
   -webkit-touch-callout: none;
   /* iOS Safari */
