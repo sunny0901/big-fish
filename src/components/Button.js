@@ -16,12 +16,12 @@ export default class Button extends Component {
         } = this.props;
 
         return (
-            <button style = {{...styles.button, opacity: this.state.hovered? 0.5 : 1, ...style}}
-            onClick = {onClick}
-            onMouseEnter = {() =>{
+            <button style={{...styles.button, opacity: this.state.hovered? 0.5 : 1, ...style}}
+            onClick={onClick}
+            onMouseEnter={() =>{
                 this.setState({hovered: true});
             }}
-            onMouseLeave = {() =>{
+            onMouseLeave={() =>{
                 this.setState({hovered: false});
             }}
             >{btnText}</button>

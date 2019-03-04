@@ -13,7 +13,7 @@ class Validation {
 
 export const isExist = new Validation(
     'isExist',
-    text => !!/\S/.test(text),
+    function (text){return text.match(/\S/)},
     'Required'
 )
 

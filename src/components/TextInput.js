@@ -15,13 +15,13 @@ export default class TextInput extends Component {
         } = this.props;
 
         return (
-            <div style = {{...styles.container, ...style}}> 
+            <div style={{...styles.container, ...style}}> 
                 <div>
-                    <input {...rest} style = {styles.input}/>
-                    <div style = {styles.line(errMes)}
+                    <input {...rest} style={styles.input}/>
+                    <div style={styles.line(errMes)}
                     ></div>
                 </div>
-                <Text type = 'xs err'>{errMes}</Text>
+                <Text type='xs err'>{errMes}</Text>
             </div>
         );
     }
