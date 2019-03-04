@@ -25,7 +25,7 @@ class App extends Component {
     name: ''
   }
 
-  onBlur = ({target: {id, value}}) =>{ //pass in event
+  onBlur = ({target: {id, value}}) => { //pass in event
     //console.log('on Blur', value); //***event.target.value
     if (!value) {
       this.setState ({
@@ -56,20 +56,20 @@ class App extends Component {
       })
     }
   }
-
+  
   render() {
     return (
-      <div style = {styles.container}>
-        <div style = {styles.panel}>
-          <p style = {styles.logo}>BIG FISH</p>
-          <TextInput id = {'email'} onBlur = {this.onBlur} onChange = {this.onChange} errMes = {this.state.emailErr} style = {{marginBottom: 8}} placeholder = "Email" />
-          <TextInput id = {'password'} onBlur = {this.onBlur} onChange = {this.onChange} errMes = {this.state.passwordErr} style = {{marginBottom: 8}} placeholder = "Password" />
-          <TextInput id = {'name'} onBlur = {this.onBlur} onChange = {this.onChange} errMes = {this.state.nameErr} style = {{marginBottom: 73}} placeholder = "Name" />
-          <Button onClick = {this.onSubmit} style = {{marginBottom: 52}} btnText = 'Signup' />
-          <div style = {styles.footer_container}>
-            <div style = {styles.footer}>
-              <p style = {styles.footer_text}>Already have an account?&nbsp;&nbsp;</p>
-              <p style = {styles.footer_login}>Login</p>
+      <div style={styles.container}>
+        <div style={styles.panel}>
+          <p style={styles.logo}>BIG FISH</p>
+          <TextInput id={'email'} onBlur={this.onBlur} onChange={this.onChange} errMes={this.state.emailErr} style={{marginBottom: 8}} placeholder="Email" />
+          <TextInput id={'password'} onBlur={this.onBlur} onChange={this.onChange} errMes={this.state.passwordErr} style={{marginBottom: 8}} placeholder="Password" />
+          <TextInput id={'name'} onBlur={this.onBlur} onChange={this.onChange} errMes={this.state.nameErr} style={{marginBottom: 73}} placeholder="Name" />
+          <Button onClick={this.onSubmit} style={{marginBottom: 52}} btnText='Signup' />
+          <div style={styles.footer_container}>
+            <div style={styles.footer}>
+              <p style={styles.footer_text}>Already have an account?&nbsp;&nbsp;</p>
+              <p style={styles.footer_login}>Login</p>
             </div>
           </div>
         </div>
