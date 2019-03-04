@@ -1,6 +1,6 @@
 import {
     themeColor,
-}from '../constants';
+}from '../../constants';
 
 const styles = {
     button: {
@@ -12,9 +12,6 @@ const styles = {
 
         fontSize: 25,
         color: 'white',
-
-        marginTop: 89.5,
-        marginBottom: 52,
     }
 };
 

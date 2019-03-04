@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import styles from "./styles/Button";
+import { themeColor } from '../constants';
 
 export default class Button extends Component {
     constructor (props){
@@ -8,15 +9,22 @@ export default class Button extends Component {
     }
 
     render () {
+        const {
+            style,
+            btnText,
+            onClick,
+        } = this.props;
+
         return (
-            <button style = {{...styles.button, opacity: this.state.hovered? 0.5 : 1}}
+            <button style = {{...styles.button, opacity: this.state.hovered? 0.5 : 1, ...style}}
+            onClick = {onClick}
             onMouseEnter = {() =>{
                 this.setState({hovered: true});
             }}
             onMouseLeave = {() =>{
                 this.setState({hovered: false});
             }}
-            >{this.props.btnText}</button>
+            >{btnText}</button>
         );
     }
 }
