@@ -26,7 +26,7 @@ class App extends Component {
   }
 
   onBlur = ({target: {id, value}}) => { //pass in event
-    console.log('on Blur', value); //***event.target.value
+    //console.log('on Blur', value); //***event.target.value
     if (!value) {
       this.setState ({
         [id + 'Err']: 'Required'
@@ -57,12 +57,7 @@ class App extends Component {
     }
   }
   
-  haha(){
-    console.log(this)
-  }
-
   render() {
-    this.haha()
     return (
       <div style={styles.container}>
         <div style={styles.panel}>
