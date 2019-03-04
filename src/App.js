@@ -1,16 +1,15 @@
 import React, { Component} from 'react';
-import Signup from './pages/Signup';
-import Login from './pages/Login';
-import {Route} from 'react-router-dom'
+import SignInSignUp from './pages/SignInSignUp';
+import { Route, Switch, Redirect } from 'react-router-dom'
 
 class App extends Component {
  
   render() {
     return (
-        <>
-        <Route path = '/Signup' component = {Signup} />
-        <Route path = '/Login' component = {Login} />
-        </>
+        <Switch>
+            <Route exact path = {['/signup', '/login', '/']} component = {SignInSignUp} />
+            <Redirect to = '/login' />
+        </Switch>
     );
   }
 }

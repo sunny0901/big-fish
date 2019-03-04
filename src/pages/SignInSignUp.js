@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import styles from '../styles/App'
 import TextInput from '../components/TextInput'
 import Button from '../components/Button'
-import {Link} from 'react-router-dom'
+import { Route, Link } from 'react-router-dom'
 import validate, {
   isExist,
   emailFormat,
@@ -12,7 +12,7 @@ import validate, {
   nameLength,
 } from '../utils/validations'
 
-class Login extends Component {
+class SignInSignUp extends Component {
 
   state = {
     emailErr: '',
@@ -64,12 +64,27 @@ class Login extends Component {
         <div style={styles.panel}>
           <p style={styles.logo}>BIG FISH</p>
           <TextInput id={'email'} onBlur={this.onBlur} onChange={this.onChange} errMes={this.state.emailErr} style={{marginBottom: 8}} placeholder="Email" />
-          <TextInput id={'password'} onBlur={this.onBlur} onChange={this.onChange} errMes={this.state.passwordErr} style={{marginBottom: 71}} placeholder="Password" />
-          <Button onClick={this.onSubmit} style={{marginBottom: 113}} btnText='Signup' />
+          <TextInput id={'password'} onBlur={this.onBlur} onChange={this.onChange} errMes={this.state.passwordErr } style={{marginBottom: 8}}  placeholder="Password" />
+          <Route path='/signup' render={()=>
+            <TextInput id={'name'} onBlur={this.onBlur} onChange={this.onChange} errMes={this.state.nameErr} placeholder="Name" />
+          } />
+          <Route path='/signup' render={()=>
+            <Button onClick={this.onSubmit} style={{marginTop: 73}} btnText='Signup' />
+          } />
+          <Route exact path={['/login', '/']} render={()=>
+            <Button onClick={this.onSubmit} style={{marginTop: 73}} btnText='Login' />
+          } />
           <div style={styles.footer_container}>
             <div style={styles.footer}>
-              <p style={styles.footer_text}>Already have an account?&nbsp;&nbsp;</p>
-              <Link to = './Signup'><p style={styles.footer_login}>Login</p></Link>
+              <Route path='/signup' render={()=><>
+                <p style={styles.footer_text}>Already have an account?&nbsp;&nbsp;</p>
+                <Link to='./Login'><p style={styles.footer_login}>Login</p></Link></>
+              } />
+              <Route exact path={['/login', '/']} render={()=><>
+                <p style={styles.footer_text}>Don't have an account?&nbsp;&nbsp;</p>
+                <Link to='./signup'><p style={styles.footer_login}>Signup</p></Link></>
+              } />
+
             </div>
           </div>
         </div>
@@ -78,4 +93,4 @@ class Login extends Component {
   }
 }
 
-export default Login;
+export default SignInSignUp;
