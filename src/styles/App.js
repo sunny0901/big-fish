@@ -33,8 +33,8 @@ const styles = {
         marginTop: 46,
         marginBottom: 32,
     },
-    footer_container: {
-        
+    placeholder: {
+        flex: 1,
     },
     footer: {
         width: 500,

@@ -59,6 +59,9 @@ class SignInSignUp extends Component {
   }
   
   render() {
+    const {
+      location
+    } = this.props
     return (
       <div style={styles.container}>
         <div style={styles.panel}>
@@ -68,24 +71,20 @@ class SignInSignUp extends Component {
           <Route path='/signup' render={()=>
             <TextInput id={'name'} onBlur={this.onBlur} onChange={this.onChange} errMes={this.state.nameErr} placeholder="Name" />
           } />
-          <Route path='/signup' render={()=>
-            <Button onClick={this.onSubmit} style={{marginTop: 73}} btnText='Signup' />
-          } />
-          <Route exact path={['/login', '/']} render={()=>
-            <Button onClick={this.onSubmit} style={{marginTop: 73}} btnText='Login' />
-          } />
-          <div style={styles.footer_container}>
-            <div style={styles.footer}>
-              <Route path='/signup' render={()=><>
-                <p style={styles.footer_text}>Already have an account?&nbsp;&nbsp;</p>
-                <Link to='./Login'><p style={styles.footer_login}>Login</p></Link></>
-              } />
-              <Route exact path={['/login', '/']} render={()=><>
-                <p style={styles.footer_text}>Don't have an account?&nbsp;&nbsp;</p>
-                <Link to='./signup'><p style={styles.footer_login}>Signup</p></Link></>
-              } />
 
-            </div>
+          <Button onClick={this.onSubmit} style={{marginTop: 73}} btnText={location.pathname == '/login' ? 'Login': 'Signup'} />
+
+          <div style={styles.placeholder} />
+
+          <div style={styles.footer}>
+            <Route path='/signup' render={()=><>
+              <p style={styles.footer_text}>Already have an account?&nbsp;&nbsp;</p>
+              <Link to='./login'><p style={styles.footer_login}>Login</p></Link></>
+            } />
+            <Route exact path={['/login', '/']} render={()=><>
+              <p style={styles.footer_text}>Don't have an account?&nbsp;&nbsp;</p>
+              <Link to='./signup'><p style={styles.footer_login}>Signup</p></Link></>
+            } />
           </div>
         </div>
       </div>
