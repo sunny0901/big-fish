@@ -12,7 +12,7 @@ import validate, {
   nameLength,
 } from '../utils/validations'
 
-class SignInSignUp extends Component {
+export default class SignInSignUp extends Component {
 
   state = {
     emailErr: '',
@@ -92,5 +92,3 @@ class SignInSignUp extends Component {
     );
   }
 }
-
-export default SignInSignUp;
