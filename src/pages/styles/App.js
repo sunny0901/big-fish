@@ -1,9 +1,9 @@
-import background_image from '../assets/images/background.jpg';
+import background_image from '../../assets/images/background.jpg';
 import {
     themeColor,
     silverColor,
     yaQingColor,
-}from '../constants';
+}from '../../constants';
 
 const styles = {
     container: {

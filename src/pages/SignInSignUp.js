@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import styles from '../styles/App'
+import styles from './styles/App'
 import TextInput from '../components/TextInput'
 import Button from '../components/Button'
 import { Route, Link } from 'react-router-dom'
@@ -62,6 +62,7 @@ class SignInSignUp extends Component {
     const {
       location
     } = this.props
+
     return (
       <div style={styles.container}>
         <div style={styles.panel}>

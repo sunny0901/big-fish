@@ -1,5 +1,5 @@
 import React, { Component} from 'react';
-import SignInSignUp from './pages/SignInSignUp';
+import SignInSignUp from './SignInSignUp';
 import { Route, Switch, Redirect } from 'react-router-dom'
 
 class App extends Component {
