@@ -10,11 +10,18 @@ const styles = {
         //display
         display: 'flex',
         alignItems: 'center',
+        justifyContent: 'space-between',
     },
     logo: {
         color: themeColor,
         marginLeft: 19,
     },
+    img: {
+        width: 49,
+        height: 48,
+        borderRadius: '50%',
+        marginRight: 24,
+    }
 }
 
 export default styles;

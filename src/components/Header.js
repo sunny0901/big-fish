@@ -10,7 +10,7 @@ export default class Header extends Component {
         return (
             <div style={styles.container}>
                 <Text type='l RussoOne' style={styles.logo}>BIG FISH</Text>
-                <img  />
+                <img style={styles.img} src={avatarSrc} alt='avatar' />
             </div>
         );
     }
