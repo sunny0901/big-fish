@@ -3,7 +3,6 @@ import { background } from '../../constants'
 const styles = {
     contanier: {
         width: '100vw',
-        height: '100vh',
         backgroundColor: background,
         //display
         display: 'flex',
@@ -13,12 +12,12 @@ const styles = {
     },
     panel: {
         width: 900,
-        height: 200,
         marginTop: 20,
         backgroundColor: '#ffffff',
         //display
         display: 'flex',
         justifyContent: 'center',
+        flexWrap: 'wrap',
     }
 }
 

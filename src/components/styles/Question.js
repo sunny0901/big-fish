@@ -7,6 +7,8 @@ const styles = {
         display: 'flex',
         flexWrap: 'wrap',
         flexDirection: 'column',
+        //alignItems: 'center',
+        justifyContent: 'flex-start'
     },
     title: {
         width: 842,
