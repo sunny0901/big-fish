@@ -4,7 +4,7 @@ import Header from '../components/Header'
 import Question from '../components/Question'
 import Seperator from '../components/Seperator'
 import axios from 'axios';
-import avatar from '../assets/images/avatar_default.jpg'
+import avatar_default from '../assets/images/avatar_default.jpg'
 
 export default class Questions extends Component {
 
@@ -19,7 +19,6 @@ export default class Questions extends Component {
         });
 
         request.then((response) => { //server send back response
-            //console.log(response.data.questions[0].title)
             this.setState({
                 questions: response.data.questions
             });
@@ -29,10 +28,15 @@ export default class Questions extends Component {
     render(){
          return (
             <div style={styles.contanier}>
-                <Header avatarSrc={avator}/>
+                <Header avatarSrc={avatar_default}/>
                 <div style={styles.panel}>
                 {this.state.questions
                 ? this.state.questions.map((question) => {
+                    if (question.id == this.state.questions.length) {
+                        return (
+                            <Question title={question.title} content={question.content}/>
+                        );
+                    }
                     return (
                         <>
                         <Question title={question.title} content={question.content}/>
