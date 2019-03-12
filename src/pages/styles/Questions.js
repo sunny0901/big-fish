@@ -15,6 +15,7 @@ const styles = {
         marginTop: 20,
         marginBottom: 20,
         paddingTop: 23,
+        paddingBottom: 20,
         backgroundColor: '#ffffff',
         //display
         display: 'flex',
