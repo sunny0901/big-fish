@@ -14,7 +14,7 @@ class App extends Component {
       <BrowserRouter>
         { this.state.user_token?
         <Switch>
-          <Route exact path='/questions' component={Questions} />
+          <Route exact path='/questions' render={()=>{return <Questions user_token={this.state.user_token}/>}}/>
         </Switch>
         :
         <Switch>
