@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import styles from './styles/App'
 import TextInput from '../components/TextInput'
 import Button from '../components/Button'
-import { Route, Link, Switch } from 'react-router-dom'
+import { Route, Link, Switch, Redirect } from 'react-router-dom'
+import axios from 'axios'
 import validate, {
   isExist,
   emailFormat,
@@ -11,6 +12,7 @@ import validate, {
   passwordLength,
   nameLength,
 } from '../utils/validations'
+import {serverAddress} from '../constants'
 
 export default class SignInSignUp extends Component {
 
@@ -31,12 +33,17 @@ export default class SignInSignUp extends Component {
 }
 
 class SignupForm extends Component {
+  state = {
+    if_redirect: false,
+  }
+
   render() {
+    if (this.state.if_redirect) {return <Redirect to='/login'/>}
     return (
       <BaseForm
         inputs={[
           { id: 'email', placeholder: 'Email', validations: [isExist, emailFormat] },
-          { id: 'password', placeholder: 'Passoword', validations: [isExist, passwordLength, uppercase, lowercase] },
+          { id: 'password', type: 'password', placeholder: 'Passoword', validations: [isExist, passwordLength, uppercase, lowercase] },
           { id: 'name', placeholder: 'Name', validations: [nameLength] }
         ]}
         btnLabel='Signup'
@@ -45,9 +52,46 @@ class SignupForm extends Component {
           path: '/login',
           linkName: 'Login'
         }}
+        onSubmit={this.onSubmit}
       />
     );
   }
+
+  onSubmit = (input_value) => {
+    let request = axios({
+      method: 'post',
+      url: serverAddress + '/users',
+      data: {
+        user: {
+          email: input_value['email'],
+          password: input_value['password'],
+          name: input_value['name']
+        }
+      },
+      validateStatus: (status) => {
+        if (status >= 200 && status < 300 || status >= 400  && status < 500) { //go to resolve
+          return true;
+        } else {
+          return false;
+        }
+      }
+    });
+
+    request.then((response) => {
+      if (response.status == 201) {
+        this.setState({if_redirect: true});
+      } else if (response.status == 400){
+        if (response.data.errors[0].code == 'duplicated_field'){
+          alert('The email has been registered!');
+        } else {
+          alert('Something expected happened T_T Please contact admin@bigfish.ca.');
+        }
+      }
+    },(response) =>{
+      alert('Something expected happened T_T Please contact admin@bigfish.ca.');
+    })
+  }
+
 }
 
 class LoginForm extends Component {
@@ -56,7 +100,7 @@ class LoginForm extends Component {
       <BaseForm
         inputs={[
           { id: 'email', placeholder: 'Email', validations: [isExist] },
-          { id: 'password', placeholder: 'Passoword', validations: [isExist] },
+          { id: 'password', type: 'password', placeholder: 'Passoword', validations: [isExist] },
         ]}
         btnLabel='Login'
         footerText="Don't have an account?"
@@ -70,6 +114,14 @@ class LoginForm extends Component {
 }
 
 class BaseForm extends Component {
+
+  static defaultProps = {
+    inputs: [],
+    btnLabel: 'Confirm',
+    footerText: 'default footer text',
+    footerLink: { path: '/login', displayName: 'Login' },
+    onSubmit: () => { }
+  }
 
   constructor(props) { //don't know how many variables do we have
     super(props);
@@ -92,7 +144,7 @@ class BaseForm extends Component {
   }
 
   onChange = ({ target: { id, value } }) => {
-    this.input_value[id] = value
+    this.input_value[id] = value;
     if (value) {
       this.setState({
         [id + 'Err']: ''
@@ -106,10 +158,10 @@ class BaseForm extends Component {
       errMsgs[input.id + 'Err'] = validate(input.validations, this.input_value[input.id]);
     })
 
-    if (errMsgs) {
-      this.setState(errMsgs)
+    if (checkErr(errMsgs)) {
+      this.setState(errMsgs);
     } else {
-
+      this.props.onSubmit(this.input_value);
     }
   }
 
@@ -126,8 +178,8 @@ class BaseForm extends Component {
 
     return (
       <>
-        {inputs.map((input, index) =>
-          <TextInput id={input.id} onBlur={this.onBlur} onChange={this.onChange} errMes={this.state[input.id + 'Err']} style={index != inputs.length - 1 && { marginBottom: 8 }} placeholder={input.placeholder} />
+        {inputs.map(({id, validations,  ...rest}, index) =>
+          <TextInput id={id} onBlur={this.onBlur} onChange={this.onChange} errMes={this.state[id + 'Err']} style={index != inputs.length - 1 && { marginBottom: 8 }} {...rest}/>
         )}
 
         <Button onClick={this.onSubmit} style={{ marginTop: 73 }} btnText={btnLabel} />
@@ -141,6 +193,15 @@ class BaseForm extends Component {
       </>
     );
   }
+}
+
+const checkErr = obj => {
+  for (let key in obj){
+    if (obj[key]) {
+      return true;
+    }
+  }
+  return false;
 }
 
 
