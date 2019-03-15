@@ -38,7 +38,8 @@ class SignupForm extends Component {
   }
 
   render() {
-    if (this.state.if_redirect) {return <Redirect to='/login'/>}
+    if (this.state.if_redirect) {
+      return <Redirect to='/login'/>}
     return (
       <BaseForm
         inputs={[
@@ -95,7 +96,14 @@ class SignupForm extends Component {
 }
 
 class LoginForm extends Component {
+  state = {
+    if_redirect: false
+  }
+
   render() {
+    if (this.state.if_redirect) {
+      this.props.onLogin && this.props.onLogin(this.response.data.user_token);
+      return <Redirect to='/questions'/>}
     return (
       <BaseForm
         inputs={[
@@ -108,8 +116,41 @@ class LoginForm extends Component {
           path: '/signup',
           linkName: 'Signup'
         }}
+        onSubmit={this.onSubmit}
       />
     );
+  }
+  onSubmit = (input_value) => {
+    let request = axios({
+      method: 'post',
+      url: serverAddress + 'user_tokens',
+      data: {
+        credential: {
+          email: input_value.email,
+          password: input_value.password,
+        }
+      },
+      validateStatus: (status) => {
+        if (status >= 200 && status < 300 || status >= 400  && status < 500) { //go to resolve
+          return true;
+        } else {
+          return false;
+        }
+      }
+    });
+    request.then((response) => {
+      if (response.status == 201){
+        this.setState({if_redirect: true});
+      } else if(response.status == 400){
+        if (response.data.errors[0].code == 'invalid_credential'){
+          alert('Email or password is wrong!');
+        } else {
+          alert('Something expected happened T_T Please contact admin@bigfish.ca.');
+        }
+      }
+    }, (response) => {
+      alert('Something expected happened T_T Please contact admin@bigfish.ca.');
+    })
   }
 }
 
