@@ -3,8 +3,9 @@ import styles from './styles/Questions'
 import Header from '../components/Header' 
 import Question from '../components/Question'
 import Seperator from '../components/Seperator'
-import axios from 'axios';
+import axios from 'axios'
 import avatar_default from '../assets/images/avatar_default.jpg'
+import {serverAddress} from '../constants'
 
 export default class Questions extends Component {
 
@@ -15,10 +16,11 @@ export default class Questions extends Component {
     componentDidMount() {
         let request = axios({ // return promise
             method: 'get',
-            url: 'https://doublecream-server.herokuapp.com/questions',
+            url: serverAddress + '/questions',
         });
 
         request.then((response) => { //server send back response
+            console.log(response)
             this.setState({
                 questions: response.data.questions
             });
