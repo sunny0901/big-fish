@@ -6,4 +6,6 @@ export const silverColor = '#E9E7EF';
 
 export const yaQingColor = '#424C50';
 
+export const background = '#F0F0F4';
+
 

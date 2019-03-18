@@ -4,7 +4,7 @@
     color: #424C50;
 }
 
-.l {
+  .l {
     font-size: 35px;
   }
   
@@ -24,6 +24,10 @@
     font-family: RussoOne;
   }
   
+  .RobotoMedium {
+    font-Family: Roboto-Medium;
+  }
+
   .bold {
     font-weight: bold;
   }

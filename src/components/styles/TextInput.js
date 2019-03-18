@@ -9,6 +9,7 @@ const styles = {
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'space-between',
+        display: 'inline-block',
     },
     input: {
         width: 386,

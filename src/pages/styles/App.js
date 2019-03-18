@@ -1,9 +1,9 @@
-import background_image from '../assets/images/background.jpg';
+import background_image from '../../assets/images/background.jpg';
 import {
     themeColor,
     silverColor,
     yaQingColor,
-}from '../constants';
+}from '../../constants';
 
 const styles = {
     container: {
@@ -33,8 +33,8 @@ const styles = {
         marginTop: 46,
         marginBottom: 32,
     },
-    footer_container: {
-        
+    placeholder: {
+        flex: 1,
     },
     footer: {
         width: 500,
