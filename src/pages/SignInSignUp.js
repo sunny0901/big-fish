@@ -12,7 +12,7 @@ import validate, {
   passwordLength,
   nameLength,
 } from '../utils/validations'
-import {serverAddress} from '../constants'
+import { serverAddress } from '../constants'
 
 export default class SignInSignUp extends Component {
 
@@ -25,7 +25,6 @@ export default class SignInSignUp extends Component {
             <Route exact path={'/signup'} render={() => <SignupForm />} />
             <Route exact path={'/login'} render={() => <LoginForm />} />
           </Switch>
-
         </div>
       </div>
     );
@@ -39,7 +38,8 @@ class SignupForm extends Component {
 
   render() {
     if (this.state.if_redirect) {
-      return <Redirect to='/login'/>}
+      return <Redirect to='/login' />
+    }
     return (
       <BaseForm
         inputs={[
@@ -70,7 +70,7 @@ class SignupForm extends Component {
         }
       },
       validateStatus: (status) => {
-        if (status >= 200 && status < 300 || status >= 400  && status < 500) { //go to resolve
+        if (status >= 200 && status < 300 || status >= 400 && status < 500) { //go to resolve
           return true;
         } else {
           return false;
@@ -80,15 +80,15 @@ class SignupForm extends Component {
 
     request.then((response) => {
       if (response.status == 201) {
-        this.setState({if_redirect: true});
-      } else if (response.status == 400){
-        if (response.data.errors[0].code == 'duplicated_field'){
+        this.setState({ if_redirect: true });
+      } else if (response.status == 400) {
+        if (response.data.errors[0].code == 'duplicated_field') {
           alert('The email has been registered!');
         } else {
           alert('Something expected happened T_T Please contact admin@bigfish.ca.');
         }
       }
-    },(response) =>{
+    }, (response) => {
       alert('Something expected happened T_T Please contact admin@bigfish.ca.');
     })
   }
@@ -103,7 +103,8 @@ class LoginForm extends Component {
   render() {
     if (this.state.if_redirect) {
       this.props.onLogin && this.props.onLogin(this.response.data.user_token);
-      return <Redirect to='/questions'/>}
+      return <Redirect to='/questions' />
+    }
     return (
       <BaseForm
         inputs={[
@@ -131,7 +132,7 @@ class LoginForm extends Component {
         }
       },
       validateStatus: (status) => {
-        if (status >= 200 && status < 300 || status >= 400  && status < 500) { //go to resolve
+        if (status >= 200 && status < 300 || status >= 400 && status < 500) { //go to resolve
           return true;
         } else {
           return false;
@@ -139,10 +140,10 @@ class LoginForm extends Component {
       }
     });
     request.then((response) => {
-      if (response.status == 201){
-        this.setState({if_redirect: true});
-      } else if(response.status == 400){
-        if (response.data.errors[0].code == 'invalid_credential'){
+      if (response.status == 201) {
+        this.setState({ if_redirect: true });
+      } else if (response.status == 400) {
+        if (response.data.errors[0].code == 'invalid_credential') {
           alert('Email or password is wrong!');
         } else {
           alert('Something expected happened T_T Please contact admin@bigfish.ca.');
@@ -219,8 +220,8 @@ class BaseForm extends Component {
 
     return (
       <>
-        {inputs.map(({id, validations,  ...rest}, index) =>
-          <TextInput id={id} onBlur={this.onBlur} onChange={this.onChange} errMes={this.state[id + 'Err']} style={index != inputs.length - 1 && { marginBottom: 8 }} {...rest}/>
+        {inputs.map(({ id, validations, ...rest }, index) =>
+          <TextInput id={id} onBlur={this.onBlur} onChange={this.onChange} errMes={this.state[id + 'Err']} style={index != inputs.length - 1 && { marginBottom: 8 }} {...rest} />
         )}
 
         <Button onClick={this.onSubmit} style={{ marginTop: 73 }} btnText={btnLabel} />
@@ -237,7 +238,7 @@ class BaseForm extends Component {
 }
 
 const checkErr = obj => {
-  for (let key in obj){
+  for (let key in obj) {
     if (obj[key]) {
       return true;
     }
