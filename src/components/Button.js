@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import styles from "./styles/Button";
 import { themeColor } from '../constants';
+import './styles/Button.css'
 
 export default class Button extends Component {
     constructor (props){
@@ -25,6 +26,16 @@ export default class Button extends Component {
                 this.setState({hovered: false});
             }}
             >{btnText}</button>
+        );
+    }
+}
+
+export class FloatButton extends Component {
+    render() {
+        return (
+            <div className={'container-float-button'} style={styles.container_float_button}>
+                <img style={styles.icon} src={require('../assets/images/icons/add.svg')}/>
+            </div>
         );
     }
 }

@@ -22,7 +22,7 @@ export default class SignInSignUp extends Component {
         <div style={styles.panel}>
           <p style={styles.logo}>BIG FISH</p>
           <Switch>
-            <Route exact path={'/signup'} render={() => <SignupForm />} />
+            <Route exact path={['/signup', '/']} render={() => <SignupForm />} />
             <Route exact path={'/login'} render={() => <LoginForm />} />
           </Switch>
         </div>
