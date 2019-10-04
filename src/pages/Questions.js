@@ -9,6 +9,10 @@ import { FloatButton } from '../components/Button'
 import {Fragment} from 'react'
 import TextInput from '../components/TextInput'
 import Button from '../components/Button'
+import validate,
+     {isExist, 
+     questionTitleLength, 
+     questionContentLength} from '../utils/validations'
 
 class Questions extends Component {
 
@@ -48,7 +52,20 @@ class Questions extends Component {
 }
 
 class AddQuestion extends Component {
+
+    static VALIDATIONS = {
+        content: [isExist, questionContentLength],
+        title: [questionTitleLength]
+    }
+    
+    constructor(props) {
+        super(props);
+        this.input_value = {};
+    }
+
     state = {
+        titleErr: '',
+        contentErr: '',
         visible: true
     };
 
@@ -59,13 +76,40 @@ class AddQuestion extends Component {
                 onClick={this.hide}>
                     <div style={styles.panel_addQuestion}
                     onClick={(e) => e.stopPropagation()}>
-                        <TextInput id='title' style={{ ...styles.title_add_question, marginBottom: 8 }} placeholder='Title' />
-                        <TextInput id='content' style={styles.content_add_question} placeholder='Content' />
-                        <Button style={styles.button_add_question} btnText='Ask' />
+                        <TextInput id='title' onBlur={this.onBlur} onChange={this.onChange} errMes={this.state['titleErr']} style={{ ...styles.title_add_question, marginBottom: 8 }} placeholder='Title' />
+                        <TextInput id='content' onBlur={this.onBlur} onChange={this.onChange} errMes={this.state['contentErr']} style={styles.content_add_question} placeholder='Content' />
+                        <Button onClick={this.onSubmit} style={styles.button_add_question} btnText='Ask' />
                     </div>
                 </div>
             )
         } else return null;
+    }
+
+    onBlur = ({target : {id, value}}) => {
+        if (!value) {
+            this.setState({
+                [id + 'Err']: 'Required'
+            });
+        }
+    }
+
+    onChange = ({target: {id, value}}) => {
+        this.input_value[id] = value;
+        if (!!value) {
+            this.setState({
+                [id + 'Err']: ''
+            });
+        }
+    }
+
+    onSubmit = () => {
+        let errMsgs = {};
+        for (var id in AddQuestion.VALIDATIONS) {
+            errMsgs[id] = validate(AddQuestion.VALIDATIONS[id], this.input_value[id]);
+        }
+        if (!!checkErr(errMsgs)) {
+            this.setState(errMsgs);
+        }
     }
 
     show = () => {
@@ -78,6 +122,15 @@ class AddQuestion extends Component {
         this.setState({ visible: false });
     }
 }
+
+const checkErr = obj => {
+    for (let key in obj) {
+      if (obj[key]) {
+        return true;
+      }
+    }
+    return false;
+  }
 
 
 const mapState = state => ({

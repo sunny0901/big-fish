@@ -39,6 +39,10 @@ export const passwordLength = isValidateLength(6, 15);
 
 export const nameLength = isValidateLength(0, 200);
 
+export const questionTitleLength = isValidateLength(0, 255);
+
+export const questionContentLength = isValidateLength(0, 65535);
+
 export function isValidateLength(min_len, max_len) {
     return new Validation(
       'input_length',
