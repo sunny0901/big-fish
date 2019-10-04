@@ -168,7 +168,7 @@ class BaseForm extends Component {
   constructor(props) { //don't know how many variables do we have
     super(props);
     let temp_state = {};
-    this.input_value = {}; //this?
+    this.input_value = {};
     props.inputs.map(input => {
       temp_state[input.id + 'Err'] = '';
       this.input_value[input.id] = ''
@@ -177,7 +177,6 @@ class BaseForm extends Component {
   }
 
   onBlur = ({ target: { id, value } }) => { //pass in event
-    //console.log('on Blur', value); //***event.target.value
     if (!value) {
       this.setState({
         [id + 'Err']: 'Required'

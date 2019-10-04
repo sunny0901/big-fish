@@ -18,8 +18,7 @@ export default class TextInput extends Component {
             <div style={{...styles.container, ...style}}> 
                 <div>
                     <input {...rest} style={styles.input}/>
-                    <div style={styles.line(errMes)}
-                    ></div>
+                    <div style={styles.line(errMes)}></div>
                 </div>
                 <Text type='xs err'>{errMes}</Text>
             </div>

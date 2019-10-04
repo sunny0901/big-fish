@@ -6,6 +6,8 @@ import Seperator from '../components/Seperator'
 import avatar_default from '../assets/images/avatar_default.jpg'
 import { connect } from 'react-redux';
 import { FloatButton } from '../components/Button'
+import TextInput from '../components/TextInput'
+import Button from '../components/Button'
 
 class Questions extends Component {
 
@@ -37,17 +39,39 @@ class Questions extends Component {
                         : null}
                 </div>
                 <FloatButton />
+                <AddQuestion />
+            </div>
+        );
+    }
+}
+
+class AddQuestion extends Component {
+    state = {
+        visible: false
+    };
+
+    render() {
+        if (this.state.visible) {
+            return (
+                <div style={styles.container_addQuestion}>
+                    <div style={styles.panel_addQuestion}>
+                        <TextInput id='title' style={{ ...styles.title_add_question, marginBottom: 8 }} placeholder='Title' />
+                        <TextInput id='content' style={styles.content_add_question} placeholder='Content' />
+                        <Button style={styles.button_add_question} btnText='Ask' />
+                    </div>
                 </div>
-                );
-           }
-       }
-       
+            )
+        } else return null;
+    }
+}
+
+
 const mapState = state => ({
-                    questions: state.questions
-            });
-            
-const mapDispatch = (dispatch) =>({   //directly return 
-                    getAllQuestions: () => dispatch.questions.getAll(),
-            })
-            
+    questions: state.questions
+});
+
+const mapDispatch = (dispatch) => ({   //directly return 
+    getAllQuestions: () => dispatch.questions.getAll(),
+})
+
 export default connect(mapState, mapDispatch)(Questions);
