@@ -109,16 +109,17 @@ class AddQuestion extends Component {
         }
         if (!!checkErr(errMsgs)) {
             this.setState(errMsgs);
+        } else {
+            // we need to ensure the asynchronous operation in models has finished, so we need to put this in models
+            // this.setState({ visible: false });
         }
     }
 
     show = () => {
-        console.log('show')
         this.setState({ visible: true });
     }
 
     hide = () => {
-        console.log('hide')
         this.setState({ visible: false });
     }
 }
