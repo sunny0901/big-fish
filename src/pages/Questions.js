@@ -45,11 +45,20 @@ class Questions extends Component {
                         : null}
                 </div>
                 <FloatButton />
-                <AddQuestion />
+                <AddQuestionContainer userToken={this.props.userToken}/>
             </div>
         );
     }
 }
+const mapState = state => ({
+    questions: state.questions
+});
+
+const mapDispatch = (dispatch) => ({   //directly return 
+    getAllQuestions: () => dispatch.questions.getAll(),
+})
+
+export default connect(mapState, mapDispatch)(Questions);
 
 class AddQuestion extends Component {
 
@@ -112,6 +121,12 @@ class AddQuestion extends Component {
         } else {
             // we need to ensure the asynchronous operation in models has finished, so we need to put this in models
             // this.setState({ visible: false });
+            this.props.create && this.props.create(
+                this.input_value['title'],
+                this.input_value['content'],
+                this.props.userToken,
+                this.hide
+            )
         }
     }
 
@@ -131,15 +146,12 @@ const checkErr = obj => {
       }
     }
     return false;
-  }
+}
 
-
-const mapState = state => ({
-    questions: state.questions
-});
-
-const mapDispatch = (dispatch) => ({   //directly return 
-    getAllQuestions: () => dispatch.questions.getAll(),
+const mapDispatchAddQuestion = (dispatch) => ({   //directly return 
+    create: (title, content, user_token, hide) => dispatch.questions.create({title, content, user_token, hide}), // since the key == value, abbr
 })
 
-export default connect(mapState, mapDispatch)(Questions);
+const AddQuestionContainer = connect(null, mapDispatchAddQuestion)(AddQuestion);
+
+

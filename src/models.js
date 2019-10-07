@@ -16,6 +16,43 @@ export const questions = {
                 url: serverAddress + '/questions',
             }).then((response) => { //server send back response
                 dispatch.questions.set(response.data.questions);
-        })}
+        })},
+
+        create: (payload, state) => {
+            let request = axios({
+                method: 'post',
+                url: serverAddress + 'questions',
+                headers: {
+                    'Authorization': JSON.stringify({
+                        user_token: {
+                            user_id: payload.user_token.user_id,
+                            key: payload.user_token.key
+                        }
+                    })
+                },
+                data: {
+                    question: {
+                        title: payload.title,
+                        content: payload.content
+                    }
+                },
+                validateStatus: (status) => {
+                    if (status >= 200 && status < 300 || status >= 400 && status < 500) { //go to resolve
+                      return true;
+                    } else {
+                      return false;
+                    }
+                }
+            });
+            request.then((response) => {
+                if (response.status == 201) {
+                    payload.hide();
+                } else {
+                    alert('Something expected happened T_T Please contact admin@bigfish.ca.');
+                }
+            }, (response) => {
+                alert('Something expected happened T_T Please contact admin@bigfish.ca.');
+            })
+        }
     })
 }
