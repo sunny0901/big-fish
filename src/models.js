@@ -5,7 +5,7 @@ export const questions = {
     state: [],
     reducers: { // pure functions
         //pure functions
-        set(state, payload) { //==get: dunction(){}
+        set(state, payload) { //==get: function(){}
             return payload; //state automatically updated right now
         }
     },
@@ -47,6 +47,7 @@ export const questions = {
             request.then((response) => {
                 if (response.status == 201) {
                     payload.success_callback && payload.success_callback();
+                    dispatch.questions.getAll();
                 } else {
                     alert('Something expected happened T_T Please contact admin@bigfish.ca.');
                 }

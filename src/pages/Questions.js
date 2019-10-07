@@ -52,7 +52,7 @@ class Questions extends Component {
         );
     }
 
-    // the viriable _add_Question_Ref can get the reference to our component
+    // the viriable _add_Question_Ref can get the reference to the instance of the component
     _addQuestionRef = (ref) => {
         this._add_Question_Ref = ref;
     }
@@ -82,7 +82,7 @@ class AddQuestion extends Component {
     state = {
         titleErr: '',
         contentErr: '',
-        visible: true
+        visible: false
     };
 
     render() {
@@ -93,7 +93,7 @@ class AddQuestion extends Component {
                     <div style={styles.panel_addQuestion}
                         onClick={(e) => e.stopPropagation()}>
                         <TextInput id='title' onBlur={this.onBlur} onChange={this.onChange} errMes={this.state['titleErr']} style={{ ...styles.title_add_question, marginBottom: 8 }} placeholder='Title' />
-                        <TextInput id='content' onBlur={this.onBlur} onChange={this.onChange} errMes={this.state['contentErr']} style={styles.content_add_question} placeholder='Content' />
+                        <TextInput id='content' onChange={this.onChange} errMes={this.state['contentErr']} style={styles.content_add_question} placeholder='Content' />
                         <Button onClick={this.onSubmit} style={styles.button_add_question} btnText='Ask' />
                     </div>
                 </div>
@@ -121,6 +121,7 @@ class AddQuestion extends Component {
     onSubmit = () => {
         let errMsgs = {};
         for (var id in AddQuestion.VALIDATIONS) {
+            console.log(AddQuestion.VALIDATIONS[id])
             errMsgs[id] = validate(AddQuestion.VALIDATIONS[id], this.input_value[id]);
         }
         if (!!checkErr(errMsgs)) {
@@ -160,5 +161,6 @@ const mapDispatchAddQuestion = (dispatch) => ({   //directly return
 })
 
 const AddQuestionContainer = connect(null, mapDispatchAddQuestion, null, { forwardRef: true })(AddQuestion);
+
 
 
