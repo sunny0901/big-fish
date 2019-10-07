@@ -6,13 +6,15 @@ import Seperator from '../components/Seperator'
 import avatar_default from '../assets/images/avatar_default.jpg'
 import { connect } from 'react-redux';
 import { FloatButton } from '../components/Button'
-import {Fragment} from 'react'
+import { Fragment } from 'react'
 import TextInput from '../components/TextInput'
 import Button from '../components/Button'
 import validate,
-     {isExist, 
-     questionTitleLength, 
-     questionContentLength} from '../utils/validations'
+{
+    isExist,
+    questionTitleLength,
+    questionContentLength
+} from '../utils/validations'
 
 class Questions extends Component {
 
@@ -31,23 +33,28 @@ class Questions extends Component {
                         ? this.props.questions.map((question) => {
                             if (question.id == this.props.questions.length) {
                                 return (
-                                    <Question key={'question_'+question.id} title={question.title} content={question.content} />
+                                    <Question key={'question_' + question.id} title={question.title} content={question.content} />
                                 );
                             } else {
                                 return (
-                                    <Fragment key={'fragment_'+question.id}>
-                                        <Question key={'question_'+question.id} title={question.title} content={question.content} />
-                                        <Seperator key={'seperator_'+question.id}/>
+                                    <Fragment key={'fragment_' + question.id}>
+                                        <Question key={'question_' + question.id} title={question.title} content={question.content} />
+                                        <Seperator key={'seperator_' + question.id} />
                                     </Fragment>
                                 );
                             }
                         })
                         : null}
                 </div>
-                <FloatButton />
-                <AddQuestionContainer userToken={this.props.userToken}/>
+                <FloatButton onClick={() => { this._add_Question_Ref.show() }} />
+                <AddQuestionContainer userToken={this.props.userToken} ref={this._addQuestionRef} />
             </div>
         );
+    }
+
+    // the viriable _add_Question_Ref can get the reference to our component
+    _addQuestionRef = (ref) => {
+        this._add_Question_Ref = ref;
     }
 }
 const mapState = state => ({
@@ -66,7 +73,7 @@ class AddQuestion extends Component {
         content: [isExist, questionContentLength],
         title: [questionTitleLength]
     }
-    
+
     constructor(props) {
         super(props);
         this.input_value = {};
@@ -82,9 +89,9 @@ class AddQuestion extends Component {
         if (!!this.state.visible) {
             return (
                 <div style={styles.container_addQuestion}
-                onClick={this.hide}>
+                    onClick={this.hide}>
                     <div style={styles.panel_addQuestion}
-                    onClick={(e) => e.stopPropagation()}>
+                        onClick={(e) => e.stopPropagation()}>
                         <TextInput id='title' onBlur={this.onBlur} onChange={this.onChange} errMes={this.state['titleErr']} style={{ ...styles.title_add_question, marginBottom: 8 }} placeholder='Title' />
                         <TextInput id='content' onBlur={this.onBlur} onChange={this.onChange} errMes={this.state['contentErr']} style={styles.content_add_question} placeholder='Content' />
                         <Button onClick={this.onSubmit} style={styles.button_add_question} btnText='Ask' />
@@ -94,7 +101,7 @@ class AddQuestion extends Component {
         } else return null;
     }
 
-    onBlur = ({target : {id, value}}) => {
+    onBlur = ({ target: { id, value } }) => {
         if (!value) {
             this.setState({
                 [id + 'Err']: 'Required'
@@ -102,7 +109,7 @@ class AddQuestion extends Component {
         }
     }
 
-    onChange = ({target: {id, value}}) => {
+    onChange = ({ target: { id, value } }) => {
         this.input_value[id] = value;
         if (!!value) {
             this.setState({
@@ -141,17 +148,17 @@ class AddQuestion extends Component {
 
 const checkErr = obj => {
     for (let key in obj) {
-      if (obj[key]) {
-        return true;
-      }
+        if (obj[key]) {
+            return true;
+        }
     }
     return false;
 }
 
 const mapDispatchAddQuestion = (dispatch) => ({   //directly return 
-    create: (title, content, user_token, hide) => dispatch.questions.create({title, content, user_token, hide}), // since the key == value, abbr
+    create: (title, content, user_token, success_callback) => dispatch.questions.create({ title, content, user_token, success_callback }), // since the key == value, abbr
 })
 
-const AddQuestionContainer = connect(null, mapDispatchAddQuestion)(AddQuestion);
+const AddQuestionContainer = connect(null, mapDispatchAddQuestion, null, { forwardRef: true })(AddQuestion);
 
 

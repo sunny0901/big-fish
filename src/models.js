@@ -46,7 +46,7 @@ export const questions = {
             });
             request.then((response) => {
                 if (response.status == 201) {
-                    payload.hide();
+                    payload.success_callback && payload.success_callback();
                 } else {
                     alert('Something expected happened T_T Please contact admin@bigfish.ca.');
                 }
