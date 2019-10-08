@@ -13,17 +13,12 @@ class App extends Component {
     return (
       <BrowserRouter>
         <Switch>
-          <Route exact path='/questions' render={()=>{return <Questions userToken={this.state.user_token}/>}}/>
-          <Route exact path={['/signup', '/login', '/']} render={()=>{return <SignInSignUp onLogin={this.onLogin}/>}} />
+          <Route exact path='/questions' render={()=>{return <Questions/>}}/>
+          <Route exact path={['/signup', '/login', '/']} render={()=>{return <SignInSignUp/>}} />
           <Redirect to='/login' />
         </Switch>
         </BrowserRouter>
     );
-  }
-  onLogin = (user_token) => {
-    this.setState({
-      user_token
-    })
   }
 }
 

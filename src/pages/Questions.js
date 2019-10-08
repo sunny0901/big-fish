@@ -132,7 +132,6 @@ class AddQuestion extends Component {
             this.props.create && this.props.create(
                 this.input_value['title'],
                 this.input_value['content'],
-                this.props.userToken,
                 this.hide
             )
         }
@@ -157,7 +156,7 @@ const checkErr = obj => {
 }
 
 const mapDispatchAddQuestion = (dispatch) => ({   //directly return 
-    create: (title, content, user_token, success_callback) => dispatch.questions.create({ title, content, user_token, success_callback }), // since the key == value, abbr
+    create: (title, content, success_callback) => dispatch.questions.create({ title, content, success_callback }), // since the key == value, abbr
 })
 
 const AddQuestionContainer = connect(null, mapDispatchAddQuestion, null, { forwardRef: true })(AddQuestion);
