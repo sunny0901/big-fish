@@ -3,7 +3,6 @@ import styles from './styles/App'
 import TextInput from '../components/TextInput'
 import Button from '../components/Button'
 import { Route, Link, Switch, Redirect } from 'react-router-dom'
-import axios from 'axios'
 import validate, {
   isExist,
   emailFormat,
@@ -12,7 +11,6 @@ import validate, {
   passwordLength,
   nameLength,
 } from '../utils/validations'
-import { serverAddress } from '../constants'
 import { connect } from 'react-redux'
 
 export default class SignInSignUp extends Component {
@@ -23,7 +21,7 @@ export default class SignInSignUp extends Component {
         <div style={styles.panel}>
           <p style={styles.logo}>BIG FISH</p>
           <Switch>
-            <Route exact path={['/signup', '/']} render={() => <SignupForm />} />
+            <Route exact path={['/signup', '/']} render={() => <SignupFormContainer />} />
             <Route exact path={'/login'} render={() => <LoginFormContainer onLogin={this.props.onLogin} />} />
           </Switch>
         </div>
@@ -60,40 +58,20 @@ class SignupForm extends Component {
   }
 
   onSubmit = (input_value) => {
-    let request = axios({
-      method: 'post',
-      url: serverAddress + '/users',
-      data: {
-        user: {
-          email: input_value['email'],
-          password: input_value['password'],
-          name: input_value['name']
-        }
-      },
-      validateStatus: (status) => {
-        if (status >= 200 && status < 300 || status >= 400 && status < 500) { //go to resolve
-          return true;
-        } else {
-          return false;
-        }
-      }
-    });
-
-    request.then((response) => {
-      if (response.status == 201) {
-        this.setState({ if_redirect: true });
-      } else if (response.status == 400) {
-        if (response.data.errors[0].code == 'duplicated_field') {
-          alert('The email has been registered!');
-        } else {
-          alert('Something expected happened T_T Please contact admin@bigfish.ca.');
-        }
-      }
-    }, (response) => {
-      alert('Something expected happened T_T Please contact admin@bigfish.ca.');
-    })
+    this.props.signup(
+      input_value['email'],
+      input_value['password'],
+      input_value['name'],
+      () => this.setState({ if_redirect: true })
+    )
   }
 }
+
+const mapDispatchSignup = (dispatch) => ({
+  signup: (email, password, name, success_callback) => dispatch.users.create({ email, password, name, success_callback })
+})
+
+const SignupFormContainer = connect(null, mapDispatchSignup)(SignupForm);
 
 class LoginForm extends Component {
   state = {

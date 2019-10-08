@@ -121,7 +121,6 @@ class AddQuestion extends Component {
     onSubmit = () => {
         let errMsgs = {};
         for (var id in AddQuestion.VALIDATIONS) {
-            console.log(AddQuestion.VALIDATIONS[id])
             errMsgs[id] = validate(AddQuestion.VALIDATIONS[id], this.input_value[id]);
         }
         if (!!checkErr(errMsgs)) {
