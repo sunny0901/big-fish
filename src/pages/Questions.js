@@ -28,23 +28,25 @@ class Questions extends Component {
         return (
             <div style={styles.contanier}>
                 <Header avatarSrc={avatar_default} />
-                <div style={styles.panel}>
-                    {this.props.questions
-                        ? this.props.questions.map((question) => {
-                            if (question.id == this.props.questions.length) {
-                                return (
-                                    <Question key={'question_' + question.id} title={question.title} content={question.content} />
-                                );
-                            } else {
-                                return (
-                                    <Fragment key={'fragment_' + question.id}>
+                <div style={styles.scrollable}>
+                    <div style={styles.panel}>
+                        {this.props.questions
+                            ? this.props.questions.map((question) => {
+                                if (question.id == this.props.questions.length) {
+                                    return (
                                         <Question key={'question_' + question.id} title={question.title} content={question.content} />
-                                        <Seperator key={'seperator_' + question.id} />
-                                    </Fragment>
-                                );
-                            }
-                        })
-                        : null}
+                                    );
+                                } else {
+                                    return (
+                                        <Fragment key={'fragment_' + question.id}>
+                                            <Question key={'question_' + question.id} title={question.title} content={question.content} />
+                                            <Seperator key={'seperator_' + question.id} />
+                                        </Fragment>
+                                    );
+                                }
+                            })
+                            : null}
+                    </div>
                 </div>
                 <FloatButton onClick={() => { this._add_Question_Ref.show() }} />
                 <AddQuestionContainer userToken={this.props.userToken} ref={this._addQuestionRef} />

@@ -3,6 +3,7 @@ import { background } from '../../constants'
 const styles = {
     contanier: {
         width: '100vw',
+        height: '100vh',
         backgroundColor: background,
         //display
         display: 'flex',
@@ -10,6 +11,16 @@ const styles = {
         justifyContent: 'flex-start',
         alignItems: 'center',
     },
+    scrollable: {
+        // styling self
+        flex: 1,
+        alignSelf: 'stretch',
+        overflow: 'auto',
+        // styling children
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+      },
     panel: {
         width: 900,
         marginTop: 20,

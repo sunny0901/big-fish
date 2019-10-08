@@ -5,10 +5,6 @@ import { Route, Switch, Redirect, BrowserRouter } from 'react-router-dom'
 
 class App extends Component {
 
-  state = {
-    user_token: null
-  };
-
   render() {
     return (
       <BrowserRouter>
