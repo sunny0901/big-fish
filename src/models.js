@@ -5,7 +5,7 @@ export const questions = {
     state: [],
     reducers: { // pure functions
         //pure functions
-        set(state, payload) { //==get: function(){}
+        set(state, payload) { //==set: function(){}
             return payload; //state automatically updated right now
         }
     },
@@ -56,4 +56,16 @@ export const questions = {
             })
         }
     })
+}
+
+export const user_token = {
+    state: null,
+    reducers: {
+        set(state, payload) {
+            return payload;
+        }
+    },
+    effects: {
+        
+    }
 }
