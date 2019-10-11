@@ -78,13 +78,14 @@ export default connect(mapState, mapDispatch)(Questions);
 class AddQuestion extends Component {
 
     static VALIDATIONS = {
-        content: [isExist, questionContentLength],
-        title: [questionTitleLength]
+        title: [isExist, questionTitleLength],
+        content: [questionContentLength]
     }
 
     constructor(props) {
         super(props);
         this.input_value = {};
+
     }
 
     state = {
@@ -129,8 +130,9 @@ class AddQuestion extends Component {
     onSubmit = () => {
         let errMsgs = {};
         for (var id in AddQuestion.VALIDATIONS) {
-            console.log(this.input_value[id].length)
-            errMsgs[id] = validate(AddQuestion.VALIDATIONS[id], this.input_value[id]);
+            if (!!this.input_value[id]) {
+                errMsgs[id] = validate(AddQuestion.VALIDATIONS[id], this.input_value[id]);
+            }
         }
         if (!!checkErr(errMsgs)) {
             this.setState(errMsgs);
