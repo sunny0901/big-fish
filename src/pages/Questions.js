@@ -29,24 +29,9 @@ class Questions extends Component {
             <div style={styles.contanier}>
                 <Header avatarSrc={avatar_default} />
                 <div style={styles.scrollable}>
-                    <div style={styles.panel}>
-                        {this.props.questions
-                            ? this.props.questions.map((question) => {
-                                if (question.id == this.props.questions.length) {
-                                    return (
-                                        <Question key={'question_' + question.id} title={question.title} content={question.content} />
-                                    );
-                                } else {
-                                    return (
-                                        <Fragment key={'fragment_' + question.id}>
-                                            <Question key={'question_' + question.id} title={question.title} content={question.content} />
-                                            <Seperator key={'seperator_' + question.id} />
-                                        </Fragment>
-                                    );
-                                }
-                            })
-                            : null}
-                    </div>
+                    {this.props.questions
+                        ? <QuestionList questions={this.props.questions}/>
+                    : null}
                 </div>
                 <FloatButton onClick={() => { this._add_Question_Ref.show() }} />
                 <AddQuestionContainer userToken={this.props.userToken} ref={this._addQuestionRef} />
@@ -59,6 +44,27 @@ class Questions extends Component {
         this._add_Question_Ref = ref;
     }
 }
+
+function QuestionList(props) {
+    if (props.questions) {
+        var arr_questions = props.questions.map((question) => {
+            return (
+                <Question key={'question_' + question.id} 
+                          title={question.title} 
+                          content={question.content}
+                />
+            )
+        });
+    }
+    let arr_mixed = [];
+    for (let i = 0; i < arr_questions.length - 1; i++) {
+        arr_mixed.push(arr_questions[i]);
+        arr_mixed.push(<Seperator key={'seperator_' + i} />);
+    }
+    arr_mixed.push(arr_questions[arr_questions.length - 1])
+    return <div style={styles.panel}>{ arr_mixed }</div>
+} 
+
 const mapState = state => ({
     questions: state.questions
 });
@@ -123,6 +129,7 @@ class AddQuestion extends Component {
     onSubmit = () => {
         let errMsgs = {};
         for (var id in AddQuestion.VALIDATIONS) {
+            console.log(this.input_value[id].length)
             errMsgs[id] = validate(AddQuestion.VALIDATIONS[id], this.input_value[id]);
         }
         if (!!checkErr(errMsgs)) {
