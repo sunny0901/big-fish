@@ -3,7 +3,6 @@ import styles from './styles/App'
 import TextInput from '../components/TextInput'
 import Button from '../components/Button'
 import { Route, Link, Switch, Redirect } from 'react-router-dom'
-import axios from 'axios'
 import validate, {
   isExist,
   emailFormat,
@@ -12,7 +11,7 @@ import validate, {
   passwordLength,
   nameLength,
 } from '../utils/validations'
-import {serverAddress} from '../constants'
+import { connect } from 'react-redux'
 
 export default class SignInSignUp extends Component {
 
@@ -22,10 +21,9 @@ export default class SignInSignUp extends Component {
         <div style={styles.panel}>
           <p style={styles.logo}>BIG FISH</p>
           <Switch>
-            <Route exact path={'/signup'} render={() => <SignupForm />} />
-            <Route exact path={'/login'} render={() => <LoginForm />} />
+            <Route exact path={['/signup', '/']} render={() => <SignupFormContainer />} />
+            <Route exact path={'/login'} render={() => <LoginFormContainer onLogin={this.props.onLogin} />} />
           </Switch>
-
         </div>
       </div>
     );
@@ -39,7 +37,8 @@ class SignupForm extends Component {
 
   render() {
     if (this.state.if_redirect) {
-      return <Redirect to='/login'/>}
+      return <Redirect to='/login' />
+    }
     return (
       <BaseForm
         inputs={[
@@ -59,41 +58,20 @@ class SignupForm extends Component {
   }
 
   onSubmit = (input_value) => {
-    let request = axios({
-      method: 'post',
-      url: serverAddress + '/users',
-      data: {
-        user: {
-          email: input_value['email'],
-          password: input_value['password'],
-          name: input_value['name']
-        }
-      },
-      validateStatus: (status) => {
-        if (status >= 200 && status < 300 || status >= 400  && status < 500) { //go to resolve
-          return true;
-        } else {
-          return false;
-        }
-      }
-    });
-
-    request.then((response) => {
-      if (response.status == 201) {
-        this.setState({if_redirect: true});
-      } else if (response.status == 400){
-        if (response.data.errors[0].code == 'duplicated_field'){
-          alert('The email has been registered!');
-        } else {
-          alert('Something expected happened T_T Please contact admin@bigfish.ca.');
-        }
-      }
-    },(response) =>{
-      alert('Something expected happened T_T Please contact admin@bigfish.ca.');
-    })
+    this.props.signup(
+      input_value['email'],
+      input_value['password'],
+      input_value['name'],
+      () => this.setState({ if_redirect: true })
+    )
   }
-
 }
+
+const mapDispatchSignup = (dispatch) => ({
+  signup: (email, password, name, success_callback) => dispatch.users.create({ email, password, name, success_callback })
+})
+
+const SignupFormContainer = connect(null, mapDispatchSignup)(SignupForm);
 
 class LoginForm extends Component {
   state = {
@@ -102,8 +80,8 @@ class LoginForm extends Component {
 
   render() {
     if (this.state.if_redirect) {
-      this.props.onLogin && this.props.onLogin(this.response.data.user_token);
-      return <Redirect to='/questions'/>}
+      return <Redirect to='/questions' />
+    }
     return (
       <BaseForm
         inputs={[
@@ -121,123 +99,99 @@ class LoginForm extends Component {
     );
   }
   onSubmit = (input_value) => {
-    let request = axios({
-      method: 'post',
-      url: serverAddress + 'user_tokens',
-      data: {
-        credential: {
-          email: input_value.email,
-          password: input_value.password,
-        }
-      },
-      validateStatus: (status) => {
-        if (status >= 200 && status < 300 || status >= 400  && status < 500) { //go to resolve
-          return true;
-        } else {
-          return false;
-        }
-      }
-    });
-    request.then((response) => {
-      if (response.status == 201){
-        this.setState({if_redirect: true});
-      } else if(response.status == 400){
-        if (response.data.errors[0].code == 'invalid_credential'){
-          alert('Email or password is wrong!');
-        } else {
-          alert('Something expected happened T_T Please contact admin@bigfish.ca.');
-        }
-      }
-    }, (response) => {
-      alert('Something expected happened T_T Please contact admin@bigfish.ca.');
-    })
+    this.props.login(input_value['email'], input_value['password'], () => {this.setState({ if_redirect: true });});
   }
 }
 
-class BaseForm extends Component {
+const mapDispatchLogin = (dispatch) => ({
+  login: (email, password, success_callback) => dispatch.user_token.create({ email, password, success_callback })
+});
 
-  static defaultProps = {
-    inputs: [],
-    btnLabel: 'Confirm',
-    footerText: 'default footer text',
-    footerLink: { path: '/login', displayName: 'Login' },
-    onSubmit: () => { }
-  }
+const LoginFormContainer = connect(null, mapDispatchLogin)(LoginForm);
 
-  constructor(props) { //don't know how many variables do we have
-    super(props);
-    let temp_state = {};
-    this.input_value = {}; //this?
-    props.inputs.map(input => {
-      temp_state[input.id + 'Err'] = '';
-      this.input_value[input.id] = ''
-    })
-    this.state = temp_state;
-  }
+  class BaseForm extends Component {
 
-  onBlur = ({ target: { id, value } }) => { //pass in event
-    //console.log('on Blur', value); //***event.target.value
-    if (!value) {
-      this.setState({
-        [id + 'Err']: 'Required'
-      });
+    static defaultProps = {
+      inputs: [],
+      btnLabel: 'Confirm',
+      footerText: 'default footer text',
+      footerLink: { path: '/login', displayName: 'Login' },
+      onSubmit: () => { }
     }
-  }
 
-  onChange = ({ target: { id, value } }) => {
-    this.input_value[id] = value;
-    if (value) {
-      this.setState({
-        [id + 'Err']: ''
-      });
+    constructor(props) { //don't know how many variables do we have
+      super(props);
+      let temp_state = {};
+      this.input_value = {};
+      props.inputs.map(input => {
+        temp_state[input.id + 'Err'] = '';
+        this.input_value[input.id] = ''
+      })
+      this.state = temp_state;
     }
-  }
 
-  onSubmit = () => {
-    let errMsgs = {};
-    this.props.inputs.map(input => {
-      errMsgs[input.id + 'Err'] = validate(input.validations, this.input_value[input.id]);
-    })
-
-    if (checkErr(errMsgs)) {
-      this.setState(errMsgs);
-    } else {
-      this.props.onSubmit(this.input_value);
-    }
-  }
-
-  render() {
-    const {
-      inputs,
-      btnLabel,
-      footerText,
-      link: {
-        path,
-        linkName
+    onBlur = ({ target: { id, value } }) => { //pass in event
+      if (!value) {
+        this.setState({
+          [id + 'Err']: 'Required'
+        });
       }
-    } = this.props;
+    }
 
-    return (
-      <>
-        {inputs.map(({id, validations,  ...rest}, index) =>
-          <TextInput id={id} onBlur={this.onBlur} onChange={this.onChange} errMes={this.state[id + 'Err']} style={index != inputs.length - 1 && { marginBottom: 8 }} {...rest}/>
-        )}
+    onChange = ({ target: { id, value } }) => {
+      this.input_value[id] = value;
+      if (value) {
+        this.setState({
+          [id + 'Err']: ''
+        });
+      }
+    }
 
-        <Button onClick={this.onSubmit} style={{ marginTop: 73 }} btnText={btnLabel} />
+    onSubmit = () => {
+      let errMsgs = {};
+      this.props.inputs.map(input => {
+        errMsgs[input.id + 'Err'] = validate(input.validations, this.input_value[input.id]);
+      })
 
-        <div style={styles.placeholder} />
+      if (checkErr(errMsgs)) {
+        this.setState(errMsgs);
+      } else {
+        this.props.onSubmit(this.input_value);
+      }
+    }
 
-        <div style={styles.footer}>
-          <p style={styles.footer_text}>{footerText}&nbsp;&nbsp;</p>
-          <Link to={path}><p style={styles.footer_login}>{linkName}</p></Link>
-        </div>
-      </>
-    );
+    render() {
+      const {
+        inputs,
+        btnLabel,
+        footerText,
+        link: {
+          path,
+          linkName
+        }
+      } = this.props;
+
+      return (
+        <>
+          {inputs.map(({ id, validations, ...rest }, index) =>
+            <TextInput id={id} key={'input' + id} onBlur={this.onBlur} onChange={this.onChange} errMes={this.state[id + 'Err']} style={index != inputs.length - 1 && { marginBottom: 8 }} {...rest} />
+          )}
+
+          <Button onClick={this.onSubmit} style={{ marginTop: 73 }} btnText={btnLabel} />
+
+          <div style={styles.placeholder} />
+
+          <div style={styles.footer}>
+            <p style={styles.footer_text}>{footerText}&nbsp;&nbsp;</p>
+            <Link to={path}><p style={styles.footer_login}>{linkName}</p></Link>
+          </div>
+        </>
+      );
+    }
   }
-}
 
 const checkErr = obj => {
-  for (let key in obj){
+  for (let key in obj) {
     if (obj[key]) {
       return true;
     }

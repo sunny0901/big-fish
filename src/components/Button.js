@@ -1,14 +1,15 @@
 import React, { Component } from 'react';
 import styles from "./styles/Button";
 import { themeColor } from '../constants';
+import './styles/Button.css'
 
 export default class Button extends Component {
-    constructor (props){
+    constructor(props) {
         super(props);
-        this.state = {hovered: false};
+        this.state = { hovered: false };
     }
 
-    render () {
+    render() {
         const {
             style,
             btnText,
@@ -16,15 +17,26 @@ export default class Button extends Component {
         } = this.props;
 
         return (
-            <button style={{...styles.button, opacity: this.state.hovered? 0.5 : 1, ...style}}
-            onClick={onClick}
-            onMouseEnter={() =>{
-                this.setState({hovered: true});
-            }}
-            onMouseLeave={() =>{
-                this.setState({hovered: false});
-            }}
+            <button style={{ ...styles.button, opacity: this.state.hovered ? 0.5 : 1, ...style }}
+                onClick={onClick}
+                onMouseEnter={() => {
+                    this.setState({ hovered: true });
+                }}
+                onMouseLeave={() => {
+                    this.setState({ hovered: false });
+                }}
             >{btnText}</button>
+        );
+    }
+}
+
+export class FloatButton extends Component {
+    render() {
+        const { onClick } = this.props;
+        return (
+            <div className={'container-float-button'} style={styles.container_float_button} onClick={onClick}>
+                <img style={styles.icon} src={require('../assets/images/icons/add.svg')} />
+            </div>
         );
     }
 }
