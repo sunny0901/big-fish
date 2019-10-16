@@ -62,24 +62,17 @@ export const user_token = {
   },
   effects: (dispatch) => ({
     create: (payload, state) => {
-      let request = axios({
+      callAPI({
         method: 'post',
-        url: serverAddress + 'user_tokens',
+        uri: 'user_tokens',
         data: {
           credential: {
             email: payload.email,
             password: payload.password,
           }
         },
-        validateStatus: (status) => {
-          if (status >= 200 && status < 300 || status >= 400 && status < 500) { //go to resolve
-            return true;
-          } else {
-            return false;
-          }
-        }
-      });
-      request.then((response) => {
+        errorHandler: status => status == 400,
+      }).then(response => {
         if (response.status == 201) {
           dispatch.user_token.set(response.data.user_token);
           // redirect to questions page
@@ -91,8 +84,6 @@ export const user_token = {
             alert('Something expected happened T_T Please contact admin@bigfish.ca.');
           }
         }
-      }, (response) => {
-        alert('Something expected happened T_T Please contact admin@bigfish.ca.');
       })
     }
   })
