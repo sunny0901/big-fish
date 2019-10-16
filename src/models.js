@@ -99,9 +99,9 @@ export const users = {
   },
   effects: (dispatch) => ({
     create: (payload, state) => {
-      let request = axios({
+      callAPI({
         method: 'post',
-        url: serverAddress + '/users',
+        uri: '/users',
         data: {
           user: {
             email: payload.email,
@@ -109,16 +109,8 @@ export const users = {
             name: payload.name
           }
         },
-        validateStatus: (status) => {
-          if (status >= 200 && status < 300 || status >= 400 && status < 500) { //go to resolve
-            return true;
-          } else {
-            return false;
-          }
-        }
-      });
-
-      request.then((response) => {
+        errorHandler: status => status == 400,
+      }).then(response => {
         if (response.status == 201) {
           alert('You have signed up!');
           payload.success_callback && payload.success_callback();
@@ -130,8 +122,6 @@ export const users = {
             alert('Something expected happened T_T Please contact admin@bigfish.ca.');
           }
         }
-      }, (response) => {
-        alert('Something expected happened T_T Please contact admin@bigfish.ca.');
       })
     }
   })
