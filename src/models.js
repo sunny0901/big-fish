@@ -14,7 +14,7 @@ export const questions = {
       callAPI({
         uri: '/questions',
         errorHandler: status => status == 404,
-      }).then((response) => { //server send back response
+      }).then(response => { //server send back response
           if (response.status == 200) {
             dispatch.questions.set(response.data.questions);
           } else if (response.status == 404) {
@@ -28,9 +28,9 @@ export const questions = {
         alert('You have not logged in!');
         return;
       }
-      let request = axios({
+      callAPI({
         method: 'post',
-        url: serverAddress + 'questions',
+        uri: 'questions',
         headers: {
           'Authorization': JSON.stringify({
             user_token: {
@@ -45,23 +45,9 @@ export const questions = {
             content: payload.content
           }
         },
-        validateStatus: (status) => {
-          if (status >= 200 && status < 300 || status >= 400 && status < 500) { //go to resolve
-            return true;
-          } else {
-            return false;
-          }
-        }
-      });
-      request.then((response) => {
-        if (response.status == 201) {
-          payload.success_callback && payload.success_callback();
-          dispatch.questions.getAll();
-        } else {
-          alert('Something expected happened T_T Please contact admin@bigfish.ca.');
-        }
-      }, (response) => {
-        alert('Something expected happened T_T Please contact admin@bigfish.ca.');
+      }).then(response => {
+        payload.success_callback && payload.success_callback();
+        dispatch.questions.getAll();
       })
     }
   })
@@ -160,8 +146,10 @@ export const users = {
   })
 }
 
-function callAPI({ method, uri = 'get', errorHandler = () => false }) {
+function callAPI({ method = 'get', uri, errorHandler = () => false, headers, data }) {
   const request = axios({ // return promise
+    headers,
+    data,
     method,
     url: serverAddress + uri,
     validateStatus: function (status) {
