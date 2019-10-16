@@ -11,12 +11,16 @@ export const questions = {
   },
   effects: (dispatch) => ({ // impure functions
     getAll: (payload, state) => {
-      axios({ // return promise
-        method: 'get',
-        url: serverAddress + '/questions',
+      callAPI({
+        uri: '/questions',
+        errorHandler: status => status == 404,
       }).then((response) => { //server send back response
-        dispatch.questions.set(response.data.questions);
-      })
+          if (response.status == 200) {
+            dispatch.questions.set(response.data.questions);
+          } else if (response.status == 404) {
+            dispatch.questions.set([]);
+          }
+        })
     },
 
     create: (payload, state) => {
@@ -153,5 +157,19 @@ export const users = {
         alert('Something expected happened T_T Please contact admin@bigfish.ca.');
       })
     }
+  })
+}
+
+function callAPI({ method, uri = 'get', errorHandler = () => false }) {
+  const request = axios({ // return promise
+    method,
+    url: serverAddress + uri,
+    validateStatus: function (status) {
+      return (status >= 200 && status < 300 || errorHandler(status));
+    }
+  })
+  
+  return request.catch((error) => { // catch can return promise
+    alert('Something expected happened T_T Please contact admin@bigfish.ca.');
   })
 }
