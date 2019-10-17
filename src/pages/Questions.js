@@ -1,12 +1,9 @@
 import React, { Component } from 'react'
 import styles from './styles/Questions'
-import Header from '../components/Header'
 import Question from '../components/Question'
 import Seperator from '../components/Seperator'
-import avatar_default from '../assets/images/avatar_default.jpg'
 import { connect } from 'react-redux';
 import { FloatButton } from '../components/Button'
-import { Fragment } from 'react'
 import TextInput from '../components/TextInput'
 import Button from '../components/Button'
 import validate,
@@ -26,8 +23,7 @@ class Questions extends Component {
 
     render() {
         return (
-            <div style={styles.contanier}>
-                <Header avatarSrc={avatar_default} />
+            <>
                 <div style={styles.scrollable}>
                     {this.props.questions
                         ? <QuestionList questions={this.props.questions}/>
@@ -35,7 +31,7 @@ class Questions extends Component {
                 </div>
                 <FloatButton onClick={() => { this._add_Question_Ref.show() }} />
                 <AddQuestionContainer userToken={this.props.userToken} ref={this._addQuestionRef} />
-            </div>
+            </>
         );
     }
 
