@@ -54,7 +54,7 @@ export const questions = {
 }
 
 export const user_token = {
-  state: null,
+  state: JSON.parse(localStorage.getItem('user_token')),
   reducers: {
     set(state, payload) {
       return payload;
@@ -75,6 +75,8 @@ export const user_token = {
       }).then(response => {
         if (response.status == 201) {
           dispatch.user_token.set(response.data.user_token);
+          // html5 
+          localStorage.setItem('user_token', JSON.stringify(response.data.user_token));
           // redirect to questions page
           payload.success_callback && payload.success_callback();
         } else if (response.status == 400) {
