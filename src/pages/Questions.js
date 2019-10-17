@@ -12,6 +12,7 @@ import validate,
     questionTitleLength,
     questionContentLength
 } from '../utils/validations'
+import List from '../components/List'
 
 class Questions extends Component {
 
@@ -25,9 +26,7 @@ class Questions extends Component {
         return (
             <>
                 <div style={styles.scrollable}>
-                    {this.props.questions
-                        ? <QuestionList questions={this.props.questions}/>
-                    : null}
+                    <QuestionList questions={this.props.questions} />
                 </div>
                 <FloatButton onClick={() => { this._add_Question_Ref.show() }} />
                 <AddQuestionContainer userToken={this.props.userToken} ref={this._addQuestionRef} />
@@ -41,25 +40,16 @@ class Questions extends Component {
     }
 }
 
-function QuestionList(props) {
-    if (props.questions) {
-        var arr_questions = props.questions.map((question) => {
-            return (
-                <Question key={'question_' + question.id} 
-                          title={question.title} 
-                          content={question.content}
-                />
-            )
-        });
-    }
-    let arr_mixed = [];
-    for (let i = 0; i < arr_questions.length - 1; i++) {
-        arr_mixed.push(arr_questions[i]);
-        arr_mixed.push(<Seperator key={'seperator_' + i} />);
-    }
-    arr_mixed.push(arr_questions[arr_questions.length - 1])
-    return <div style={styles.panel}>{ arr_mixed }</div>
-} 
+function QuestionList({ questions }) {
+    return <div style={styles.panel}>
+        <List data={questions} renderRow={question => 
+            <Question key={'question_' + question.id}
+                title={question.title}
+                content={question.content}
+            />
+        } />
+    </div>
+}
 
 const mapState = state => ({
     questions: state.questions
