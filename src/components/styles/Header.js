@@ -15,7 +15,9 @@ const styles = {
     logo: {
         color: themeColor,
         marginLeft: 19,
+        cursor: 'pointer'
     },
+    
     img: {
         width: 49,
         height: 48,
