@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import styles from './styles/Question'
 import Text from '../components/Text'
+import { NavLink } from 'react-router-dom'
 
 export default class Question extends Component {
     render() {
@@ -8,13 +9,14 @@ export default class Question extends Component {
             title,
             content,
             style,
+            id
         } = this.props;
 
         return (
-            <div style={{...styles.container, style}}>
-                <Text type='RobotoMedium' style={{...styles.title, marginBottom:8}}>{title}</Text>
+            <NavLink to={`/questions/${id}`} style={{ ...styles.container, style }}>
+                <Text type='RobotoMedium' style={{ ...styles.title, marginBottom: 8 }}>{title}</Text>
                 <Text style={styles.content}>{content}</Text>
-            </div>
+            </NavLink>
         );
     }
 }

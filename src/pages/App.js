@@ -5,7 +5,7 @@ import styles from '../pages/styles/Questions'
 import Header from '../components/Header'
 import defaultAvatar from '../assets/images/avatar_default.jpg'
 import { connect } from 'react-redux'
-import { Route, Switch, Redirect, BrowserRouter } from 'react-router-dom'
+import { Route, Switch, Redirect, BrowserRouter} from 'react-router-dom'
 
 class App extends Component {
 
@@ -17,7 +17,7 @@ class App extends Component {
           <div style={styles.contanier}>
             <Header avatarSrc={defaultAvatar} />
             <Switch>
-              <Route exact path='/questions' render={() => { return <Questions /> }} />
+              <Route path='/questions' render={() => { return <Questions /> }} />
               {/* user changes url themselves */}
               <Redirect to='/questions' />
             </Switch>

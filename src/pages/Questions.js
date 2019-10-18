@@ -12,6 +12,8 @@ import validate,
     questionContentLength
 } from '../utils/validations'
 import List from '../components/List'
+import { Switch, Route, withRouter } from 'react-router-dom'
+import Answers from './Answers'
 
 class Questions extends Component {
 
@@ -25,7 +27,10 @@ class Questions extends Component {
         return (
             <>
                 <div style={styles.scrollable}>
-                    <QuestionList questions={this.props.questions} />
+                    <Switch>
+                        <Route path='/questions/:id' render={() => '123123'}/>
+                        <Route path='/questions' render={() => {return <QuestionList questions={this.props.questions}/> }} />
+                    </Switch>
                 </div>
                 <FloatButton onClick={() => { this._add_Question_Ref.show() }} />
                 <AddQuestionContainer userToken={this.props.userToken} ref={this._addQuestionRef} />
@@ -46,6 +51,7 @@ function QuestionList({ questions }) {
                 <Question key={'question_' + question.id}
                     title={question.title}
                     content={question.content}
+                    id={question.id}
                 />
             } />
         </div>
@@ -60,7 +66,7 @@ const mapDispatch = (dispatch) => ({   //directly return
     getAllQuestions: () => dispatch.questions.getAll(),
 })
 
-export default connect(mapState, mapDispatch)(Questions);
+export default withRouter(connect(mapState, mapDispatch)(Questions));
 
 class AddQuestion extends Component {
 
@@ -156,7 +162,7 @@ const mapDispatchAddQuestion = (dispatch) => ({   //directly return
     create: (title, content, success_callback) => dispatch.questions.create({ title, content, success_callback }), // since the key == value, abbr
 })
 
-const AddQuestionContainer = connect(null, mapDispatchAddQuestion, null, { forwardRef: true })(AddQuestion);
+const AddQuestionContainer = withRouter(connect(null, mapDispatchAddQuestion, null, { forwardRef: true })(AddQuestion));
 
 
 
