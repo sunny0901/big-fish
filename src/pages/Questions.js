@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import styles from './styles/Questions'
 import Question from '../components/Question'
-import Seperator from '../components/Seperator'
 import { connect } from 'react-redux';
 import { FloatButton } from '../components/Button'
 import TextInput from '../components/TextInput'
@@ -41,14 +40,16 @@ class Questions extends Component {
 }
 
 function QuestionList({ questions }) {
-    return <div style={styles.panel}>
-        <List data={questions} renderRow={question => 
-            <Question key={'question_' + question.id}
-                title={question.title}
-                content={question.content}
-            />
-        } />
-    </div>
+    return (
+        <div style={styles.panel}>
+            <List data={questions} renderRow={question =>
+                <Question key={'question_' + question.id}
+                    title={question.title}
+                    content={question.content}
+                />
+            } />
+        </div>
+    )
 }
 
 const mapState = state => ({

@@ -3,7 +3,7 @@ import SignInSignUp from './SignInSignUp';
 import Questions from './Questions'
 import styles from '../pages/styles/Questions'
 import Header from '../components/Header'
-import avatar_default from '../assets/images/avatar_default.jpg'
+import defaultAvatar from '../assets/images/avatar_default.jpg'
 import { connect } from 'react-redux'
 import { Route, Switch, Redirect, BrowserRouter } from 'react-router-dom'
 
@@ -15,7 +15,7 @@ class App extends Component {
       <BrowserRouter>
         {token ?
           <div style={styles.contanier}>
-            <Header avatarSrc={avatar_default} />
+            <Header avatarSrc={defaultAvatar} />
             <Switch>
               <Route exact path='/questions' render={() => { return <Questions /> }} />
               {/* user changes url themselves */}
