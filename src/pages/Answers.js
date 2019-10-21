@@ -3,13 +3,16 @@ import Question from '../components/Question'
 import List from '../components/List'
 import { connect } from 'react-redux'
 import question_style from './styles/Questions'
+import styles from './styles/Answers'
+import Answer from '../components/Answer'
+import avatar from '../assets/images/avatar_default.jpg'
 
 class Answers extends Component {
 
     componentDidMount() {
         const { match: { params: { id } } } = this.props;
         this.props.getAllAnswers(id);
-    }
+    }ß
     render() {
         const { question, answers } = this.props;
         return (
@@ -19,9 +22,12 @@ class Answers extends Component {
                         content={question.content}
                         id={question.id} />}
                 </div>
-                <div style={question_style.panel}>
+                <div style={styles.panel}>
                     <List data={answers} renderRow={answer =>
-                        <div>{answer.content}</div>} />
+                         <Answer content={answer.content} 
+                         createdat={answer.created_at}
+                         avataurl={avatar}
+                         /> }/>
                 </div>
             </>
         )
