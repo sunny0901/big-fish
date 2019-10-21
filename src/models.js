@@ -142,9 +142,8 @@ export const answers = {
   },
   effects: dispatch => ({
     async getAnswers(payload, rootState) {
-      const response = await(callAPI({
-        method: get,
-        uri: `/questions/:${payload}/answers`,
+      const response = await callAPI({
+        uri: `questions/${payload}/answers`,
         headers: {
           'Authorization': JSON.stringify({
             user_token: {
@@ -154,13 +153,12 @@ export const answers = {
           })
         },
         errorHandler: status => status == 404
-      }));
-      if (response.status == 201) {
+      });
+      if (response.status == 200) {
+        console.log(response.data.answers)
         dispatch.answers.update({
           [payload]: response.data.answers
         })
-      } else if (response.status == 404) {
-
       }
     },
     async create(payload, rootState) {

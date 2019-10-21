@@ -6,7 +6,6 @@ import { connect } from 'react-redux'
 class Answers extends Component {
 
     componentDidMount() {
-        console.log(this.props.match.params.id)
         const { match: { params: { id } } } = this.props;
         this.props.getAllAnswers(id);
     }
@@ -21,8 +20,8 @@ class Answers extends Component {
     }
 }
 
-const mapState = (state, own_props) => ({
-    answers: state.answers[own_props.match.params.id]
+const mapState = (state, ownProps) => ({
+    answers: state.answers[ownProps.match.params.id]
 });
 
 const mapDispatch = dispatch => ({

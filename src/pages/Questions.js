@@ -162,7 +162,4 @@ const mapDispatchAddQuestion = (dispatch) => ({   //directly return
     create: (title, content, success_callback) => dispatch.questions.create({ title, content, success_callback }), // since the key == value, abbr
 })
 
-const AddQuestionContainer = withRouter(connect(null, mapDispatchAddQuestion, null, { forwardRef: true })(AddQuestion));
-
-
-
+const AddQuestionContainer = connect(null, mapDispatchAddQuestion, null, { forwardRef: true })(AddQuestion);
