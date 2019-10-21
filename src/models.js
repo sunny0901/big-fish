@@ -1,5 +1,6 @@
 import axios from 'axios'
 import { serverAddress } from './constants'
+import { get } from 'https';
 
 export const questions = {
   state: [],
@@ -16,7 +17,7 @@ export const questions = {
         errorHandler: status => status == 404,
       }).then(response => { //server send back response
           if (response.status == 200) {
-            dispatch.questions.set(response.data.questions);
+            dispatch.questions.set(response.data.questions); // data send to payload
           } else if (response.status == 404) {
             dispatch.questions.set([]);
           }
@@ -125,6 +126,45 @@ export const users = {
           }
         }
       })
+    }
+  })
+}
+
+export const answers = {
+  state: {},
+  reducers: {
+    update(state, payload) {
+      return {
+        ...state,
+        ...payload
+      }
+    }
+  },
+  effects: dispatch => ({
+    async getAnswers(payload, rootState) {
+      const response = await(callAPI({
+        method: get,
+        uri: `/questions/:${payload}/answers`,
+        headers: {
+          'Authorization': JSON.stringify({
+            user_token: {
+              user_id: rootState.user_token.user_id,
+              key: rootState.user_token.key
+            }
+          })
+        },
+        errorHandler: status => status == 404
+      }));
+      if (response.status == 201) {
+        dispatch.answers.update({
+          [payload]: response.data.answers
+        })
+      } else if (response.status == 404) {
+
+      }
+    },
+    async create(payload, rootState) {
+
     }
   })
 }

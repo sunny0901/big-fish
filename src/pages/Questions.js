@@ -28,8 +28,8 @@ class Questions extends Component {
             <>
                 <div style={styles.scrollable}>
                     <Switch>
-                        <Route path='/questions/:id' render={() => '123123'}/>
-                        <Route path='/questions' render={() => {return <QuestionList questions={this.props.questions}/> }} />
+                        <Route path='/questions/:id' component={ Answers }/>
+                        <Route path='/questions' render={() => { return <QuestionList questions={this.props.questions}/> }} />
                     </Switch>
                 </div>
                 <FloatButton onClick={() => { this._add_Question_Ref.show() }} />
