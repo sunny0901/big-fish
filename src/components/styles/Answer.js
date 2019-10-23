@@ -1,8 +1,16 @@
-import { timeColor } from '../../constants'
 
 const styles = {
-    time: {
-        color: timeColor,
+    head: {
+        paddingBottom: 5
+    },
+    image: {
+        display: 'inline-block',
+        verticalAlign: 'middle',
+    },
+    userinfo: {
+        paddingLeft: 15,
+        display: 'inline-block',
+        verticalAlign: 'middle',
     },
     content: {
         width: 842

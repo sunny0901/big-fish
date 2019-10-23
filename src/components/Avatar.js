@@ -1,9 +1,9 @@
 import React from 'react'
 import defaultSrc from '../assets/images/avatar_default.jpg'
 
-export default function Avatar({ size, src }) {
+export default function Avatar({ size, src, style}) {
     return (
-        <img style={styles.avatar(size)} src={src || defaultSrc} alt='avatar'/>
+        <img style={{ ...styles.avatar(size), ...style }} src={src || defaultSrc} alt='avatar'/>
     )
 }
 
