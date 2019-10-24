@@ -41,7 +41,7 @@ class Questions extends Component {
     }
 
     // the viriable _add_Question_Ref can get the reference to the instance of the component
-    _addQuestionRef = (ref) => {
+    _addQuestionRef = ref => {
         this._add_Question_Ref = ref;
     }
 }
