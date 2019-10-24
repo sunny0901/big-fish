@@ -88,7 +88,7 @@ class AddQuestion extends Component {
     };
 
     render() {
-        if (!!this.state.visible) {
+        if (this.state.visible) {
             return (
                 <div style={styles.container_addQuestion}
                     onClick={this.hide}>
