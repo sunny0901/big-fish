@@ -18,10 +18,20 @@ export default function Answer(props) {
                 <div style={styles.userinfo}>
                     <Text>{'Name'}</Text>
                     <WhiteBlank h={5} />
-                    <Text className={'light'}>{`Answered ${createdat}`}</Text>
+                    <Text className={'light'}>{`Answered ${format(createdat)}`}</Text>
                 </div>
             </div>
             <Text style={styles.content}>{content}</Text>
         </div>
     )
+
+    function format(time) {
+        const mapping = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'];
+        time = time.substring(0, 10);
+        let time_arr = time.split('-');
+        let year = time_arr[0];
+        let month = mapping[time_arr[1] - '0'];
+        let day = time_arr[2];
+        return `${month} ${day}, ${year}`
+    }
 }
