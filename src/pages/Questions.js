@@ -49,7 +49,8 @@ class Questions extends Component {
 function QuestionList({ questions }) {
     return (
         <div style={styles.panel}>
-            <List data={questions} renderRow={question =>
+            <List data={questions} 
+            renderRow={question =>
                 <Question key={'question_' + question.id}
                     title={question.title}
                     content={question.content}

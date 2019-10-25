@@ -23,7 +23,6 @@ export const questions = {
           }
         })
     },
-
     create: (payload, state) => {
       if (!state.user_token) {
         alert('You have not logged in!');
@@ -158,6 +157,8 @@ export const answers = {
         dispatch.answers.update({
           [payload]: response.data.answers
         })
+      } else if(response.status == 404) {
+        dispatch.answers.update({});
       }
     },
     async create(payload, rootState) {
@@ -178,6 +179,10 @@ export const answers = {
           }
         }
       })
+      if (response.status == 201) {
+        payload.hide();
+        dispatch.answers.getAnswers(payload.id);
+      }
     }
   })
 }

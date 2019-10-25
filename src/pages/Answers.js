@@ -13,6 +13,7 @@ import WhiteBlank from '../components/WhiteBlank'
 import { FloatButton } from '../components/Button'
 import style from './styles/Questions'
 import validate from '../utils/validations'
+import Text from '../components/Text'
 
 class Answers extends Component {
 
@@ -30,11 +31,14 @@ class Answers extends Component {
                         content={question.content}
                         id={question.id} />}
                 </div>
-                <AddAnswer ref={this._addAnswerRef} />
+                <AddAnswerContainer ref={this._addAnswerRef} match={this.props.match}/>
                 <FloatButton style={style.button_add_question} onClick={() => { this._add_Answer_Ref.show() }} />
                 <div style={styles.panel}>
-                    <List data={answers} renderRow={answer =>
-                        <Answer content={answer.content}
+                    <List data={answers} 
+                    renderEmpty={() => <Text type="light">no more answers</Text>}
+                    renderRow={answer =>
+                        <Answer key={`answer_${answer.id}`}
+                            content={answer.content}
                             createdat={answer.created_at}
                             avataurl={avatar}
                         />} />
@@ -47,6 +51,17 @@ class Answers extends Component {
         this._add_Answer_Ref = ref;
     }
 }
+
+const mapState = (state, ownProps) => ({
+    question: state.questions.find((q) => q.id == ownProps.match.params.id),
+    answers: state.answers[ownProps.match.params.id]
+});
+
+const mapDispatch = dispatch => ({
+    getAllAnswers: question_id => dispatch.answers.getAnswers(question_id),
+})
+
+export default connect(mapState, mapDispatch)(Answers);
 
 class AddAnswer extends Component {
     constructor(props) {
@@ -97,17 +112,17 @@ class AddAnswer extends Component {
         const {
             createAnswer,
             match: {
-                params: { question_id }
+                params: { id }
             }
         } = this.props;
         let errMes = '';
         if (!!this.input_value) {
-            errMes = validate(VALIDATIONS, this.input_value);
+            errMes = validate(AddAnswer.VALIDATIONS, this.input_value);
         }
         if (!!errMes) {
             this.setState({ contentErr: errMes });
         } else {
-            createAnswer && createAnswer(question_id, this.input_value);
+            createAnswer(id, this.input_value, this.hide);
         }
     }
 
@@ -116,18 +131,15 @@ class AddAnswer extends Component {
     }
 
     hide = () => {
+        this.input_value = '';
         this.setState({ visible: false })
     }
+
 }
 
-const mapState = (state, ownProps) => ({
-    question: state.questions.find((q) => q.id == ownProps.match.params.id),
-    answers: state.answers[ownProps.match.params.id]
-});
-
-const mapDispatch = dispatch => ({
+const mapDispatchAddAnswer = dispatch => ({
     getAllAnswers: question_id => dispatch.answers.getAnswers(question_id),
-    createAnswer: ( id, content ) => dispatch.answers.create({ id, content })
+    createAnswer: ( id, content, hide ) => dispatch.answers.create({ id, content, hide })
 })
 
-export default connect(mapState, mapDispatch)(Answers);
+const AddAnswerContainer =  connect(mapState, mapDispatchAddAnswer, null, { forwardRef: true })(AddAnswer);

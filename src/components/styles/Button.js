@@ -9,7 +9,7 @@ const styles = {
         backgroundColor: themeColor,
         borderRadius: 5,
         border: 'none',
-
+        cursor: 'pointer',
         fontSize: 25,
         color: 'white',
     },
