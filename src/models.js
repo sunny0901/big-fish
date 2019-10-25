@@ -158,6 +158,7 @@ export const answers = {
           [payload]: response.data.answers
         })
       } else if(response.status == 404) {
+        console.log('error')
         dispatch.answers.update({});
       }
     },
