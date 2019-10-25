@@ -80,7 +80,6 @@ class AddQuestion extends Component {
     constructor(props) {
         super(props);
         this.input_value = {};
-
     }
 
     state = {

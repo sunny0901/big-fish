@@ -29,8 +29,8 @@ class Answers extends Component {
                         content={question.content}
                         id={question.id} />}
                 </div>
-                <AddAnswer ref={this._addAnswerRef}/>
-                <FloatButton style={style.button_add_question} onClick={() => {this._add_Answer_Ref.show()}}/>
+                <AddAnswer ref={this._addAnswerRef} />
+                <FloatButton style={style.button_add_question} onClick={() => { this._add_Answer_Ref.show() }} />
                 <div style={styles.panel}>
                     <List data={answers} renderRow={answer =>
                         <Answer content={answer.content}
@@ -44,10 +44,15 @@ class Answers extends Component {
 
     _addAnswerRef = (ref) => {
         this._add_Answer_Ref = ref;
-    } 
+    }
 }
 
 class AddAnswer extends Component {
+    constructor(props) {
+        super(props);
+        this.input_value = '';
+    }
+
     static VALIDATIONS = [isExist, answerContentLength];
 
     state = {
@@ -61,17 +66,42 @@ class AddAnswer extends Component {
                 <>
                     <div style={styles.addContainer}>
                         <WhiteBlank h={16} />
-                        <TextInput id='content' style={styles.add_answer_content} placeholder='Write your answer...' />
+                        <TextInput id='content' onBlur={this.onBlur} onChange={this.onChange} errMes={this.state.contentErr} style={styles.add_answer_content} placeholder='Write your answer...' />
                         <WhiteBlank h={164} />
-                        <Button style={styles.add_answer_button} btnText='Answer' />
+                        <Button onClick={this.onSubmit} style={styles.add_answer_button} btnText='Answer' />
                     </div>
                 </>
             )
         } else return null;
     }
 
+    onBlur = ({target: {id, value}}) => {
+        if (!value) {
+            this.setState({ 
+                contentErr: 'Required'
+             });
+        }
+    }
+
+    onChange = ({target: {id, value}}) => {
+        this.input_value = value;
+        if (!!value) {
+            this.setState({ 
+                contentErr: ''
+             });
+        }
+    }
+
+    onSubmit = () => {
+
+    }
+
     show = () => {
         this.setState({ visible: true })
+    }
+
+    hide = () => {
+        this.setState({ visible: false })
     }
 }
 
