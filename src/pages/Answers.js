@@ -12,6 +12,7 @@ import Button from '../components/Button'
 import WhiteBlank from '../components/WhiteBlank'
 import { FloatButton } from '../components/Button'
 import style from './styles/Questions'
+import validate from '../utils/validations'
 
 class Answers extends Component {
 
@@ -93,7 +94,21 @@ class AddAnswer extends Component {
     }
 
     onSubmit = () => {
-
+        const {
+            createAnswer,
+            match: {
+                params: { question_id }
+            }
+        } = this.props;
+        let errMes = '';
+        if (!!this.input_value) {
+            errMes = validate(VALIDATIONS, this.input_value);
+        }
+        if (!!errMes) {
+            this.setState({ contentErr: errMes });
+        } else {
+            createAnswer && createAnswer(question_id, this.input_value);
+        }
     }
 
     show = () => {
@@ -112,7 +127,7 @@ const mapState = (state, ownProps) => ({
 
 const mapDispatch = dispatch => ({
     getAllAnswers: question_id => dispatch.answers.getAnswers(question_id),
-    createAnswer: ({ id, content }) => dispatch.answers.create({ id, content })
+    createAnswer: ( id, content ) => dispatch.answers.create({ id, content })
 })
 
 export default connect(mapState, mapDispatch)(Answers);
