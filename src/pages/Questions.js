@@ -14,6 +14,7 @@ import validate,
 import List from '../components/List'
 import { Switch, Route, withRouter } from 'react-router-dom'
 import Answers from './Answers'
+import WhiteBlank from '../components/WhiteBlank';
 
 class Questions extends Component {
 
@@ -96,7 +97,8 @@ class AddQuestion extends Component {
                     onClick={this.hide}>
                     <div style={styles.panel_addQuestion}
                         onClick={(e) => e.stopPropagation()}>
-                        <TextInput id='title' onBlur={this.onBlur} onChange={this.onChange} errMes={this.state['titleErr']} style={{ ...styles.title_add_question, marginBottom: 8 }} placeholder='Title' />
+                        <TextInput id='title' onBlur={this.onBlur} onChange={this.onChange} errMes={this.state['titleErr']} style={styles.title_add_question} placeholder='Title' />
+                        <WhiteBlank h={8}/>
                         <TextInput id='content' onChange={this.onChange} errMes={this.state['contentErr']} style={styles.content_add_question} placeholder='Content' />
                         <Button onClick={this.onSubmit} style={styles.button_add_question} btnText='Ask' />
                     </div>
