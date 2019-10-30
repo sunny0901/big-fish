@@ -138,7 +138,7 @@ export const users = {
           })
         },
         errorHandler: status => status == 404
-      })
+      });
       if (response.status == 200) {
         dispatch.users.set(
           response.data.user

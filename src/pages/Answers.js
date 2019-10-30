@@ -41,6 +41,7 @@ class Answers extends Component {
                             content={answer.content}
                             createdat={answer.created_at}
                             avataurl={avatar}
+                            user_id={answer.user_id}
                         />} />
                 </div>
             </>

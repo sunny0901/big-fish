@@ -3,26 +3,32 @@ import Text from './Text'
 import styles from './styles/Answer'
 import Avatar from './Avatar'
 import WhiteBlank from './WhiteBlank'
+import UserFetcher from './UserFetcher'
 
 export default function Answer(props) {
     const {
         content,
         createdat,
-        avataurl
+        avataurl,
+        user_id
     } = props;
 
     return (
-        <div >
+        <div>
+        <UserFetcher id={user_id}>
+            { (user) => <>
             <div style={styles.head}>
-                <Avatar size={63} src={avataurl} style={styles.image} />
+                <Avatar size={63} src={user.avatar_url || avataurl} style={styles.image} />
                 <div style={styles.userinfo}>
-                    <Text>{'Name'}</Text>
+                    <Text>{user.name || 'no name'}</Text>
                     <WhiteBlank h={5} />
                     <Text className={'light'}>{`Answered ${format(createdat)}`}</Text>
                 </div>
             </div>
             <Text style={styles.content}>{content}</Text>
-        </div>
+            </> }
+        </ UserFetcher>
+        </ div>
     )
 
     function format(time) {
