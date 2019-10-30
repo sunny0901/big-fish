@@ -125,6 +125,25 @@ export const users = {
           }
         }
       })
+    },
+    async getUser(payload, rootState){
+      const response = await callAPI({
+        uri: `users/${payload}`,
+        headers: {
+          'Authorization': JSON.stringify({
+            user_token: {
+              user_id: rootState.user_token.user_id,
+              key: rootState.user_token.key
+            }
+          })
+        },
+        errorHandler: status => status == 404
+      })
+      if (response.status == 200) {
+        dispatch.users.set(
+          response.data.user
+        )
+      }
     }
   })
 }
@@ -158,7 +177,6 @@ export const answers = {
           [payload]: response.data.answers
         })
       } else if(response.status == 404) {
-        console.log('error')
         dispatch.answers.update({});
       }
     },
