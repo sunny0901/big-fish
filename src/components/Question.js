@@ -21,7 +21,7 @@ export default class Question extends Component {
     }
 }
 
-Question.defaultProps = {  //???
+Question.defaultProps = {
     title: "",
     content: "",
 }

@@ -1,6 +1,7 @@
 import React from 'react'
 import Text from './Text'
 import styles from './styles/Popups'
+import Icon from './Icon'
 
 
 export default class Popups extends React.Component {
@@ -22,7 +23,7 @@ export default class Popups extends React.Component {
         (<div style={styles.popup_overlay}>
             <div style={styles.popup_panel}> 
             <Text type={'black'}>{message}</Text>
-            <img style={styles.icon} src={require('../assets/images/icons/cancel.svg')} onClick={this.close} />
+            <Icon style={styles.icon} type={'cancel'} onClick={this.close} />
             </div>
         </div>) : null
     }

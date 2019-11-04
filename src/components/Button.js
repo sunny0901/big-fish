@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import styles from "./styles/Button";
-import { themeColor } from '../constants';
 import './styles/Button.css'
+import Icon from './Icon'
 
 export default class Button extends Component {
     constructor(props) {
@@ -35,7 +35,7 @@ export class FloatButton extends Component {
         const { onClick } = this.props;
         return (
             <div className={'container-float-button'} style={styles.container_float_button} onClick={onClick}>
-                <img style={styles.icon} src={require('../assets/images/icons/add.svg')} />
+                <Icon style={styles.icon} type={'add'} />
             </div>
         );
     }

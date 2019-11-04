@@ -83,7 +83,7 @@ export const user_token = {
           if (response.data.errors[0].code == 'invalid_credential') {
             Popup.open('Email or password is wrong!');
           } else {
-            alert('Something expected happened T_T Please contact admin@bigfish.ca.');
+            Popup.open('Something expected happened T_T Please contact admin@bigfish.ca.');
           }
         }
       })
@@ -119,9 +119,9 @@ export const users = {
           dispatch.users.set(response.data.user);
         } else if (response.status == 400) {
           if (response.data.errors[0].code == 'duplicated_field') {
-            alert('The email has been registered!');
+            Popup.open('The email has been registered!');
           } else {
-            alert('Something expected happened T_T Please contact admin@bigfish.ca.');
+            Popup.open('Something expected happened T_T Please contact admin@bigfish.ca.');
           }
         }
       })
@@ -218,6 +218,6 @@ function callAPI({ method = 'get', uri, errorHandler = () => false, headers, dat
   })
   
   return request.catch((error) => { // catch can return promise
-    alert('Something expected happened T_T Please contact admin@bigfish.ca.');
+    Popup.open('Something expected happened T_T Please contact admin@bigfish.ca.');
   })
 }
