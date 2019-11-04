@@ -1,6 +1,6 @@
 import axios from 'axios'
 import { serverAddress } from './constants'
-import { get } from 'https';
+import Popup from './modules'
 
 export const questions = {
   state: [],
@@ -81,7 +81,7 @@ export const user_token = {
           payload.success_callback && payload.success_callback();
         } else if (response.status == 400) {
           if (response.data.errors[0].code == 'invalid_credential') {
-            alert('Email or password is wrong!');
+            Popup.open('Email or password is wrong!');
           } else {
             alert('Something expected happened T_T Please contact admin@bigfish.ca.');
           }

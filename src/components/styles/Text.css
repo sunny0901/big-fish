@@ -36,6 +36,10 @@
   .light {
     color: #9B9B9B;
   }
+
+  .black {
+    color: black
+  }
   
   .err {
     color: #FF2121;
