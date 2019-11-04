@@ -4,13 +4,15 @@ import styles from './styles/Answer'
 import Avatar from './Avatar'
 import WhiteBlank from './WhiteBlank'
 import UserFetcher from './UserFetcher'
+import Like from './Like'
 
 export default function Answer(props) {
     const {
         content,
         createdat,
         avataurl,
-        user_id
+        user_id,
+        numOfLikes,
     } = props;
 
     return (
@@ -26,6 +28,8 @@ export default function Answer(props) {
                 </div>
             </div>
             <Text style={styles.content}>{content}</Text>
+            <WhiteBlank h={8} />
+            {numOfLikes != undefined && <Like num={numOfLikes}/>}
             </> }
         </ UserFetcher>
         </ div>

@@ -42,6 +42,7 @@ class Answers extends Component {
                             createdat={answer.created_at}
                             avataurl={avatar}
                             user_id={answer.user_id}
+                            numOfLikes={answer.number_of_likes}
                         />} />
                 </div>
             </>

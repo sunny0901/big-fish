@@ -56,6 +56,7 @@ function QuestionList({ questions }) {
                     title={question.title}
                     content={question.content}
                     id={question.id}
+                    numOfLikes={question.number_of_likes}
                 />
             } />
         </div>
