@@ -8,4 +8,6 @@ export const yaQingColor = '#424C50';
 
 export const background = '#F0F0F4';
 
+export const timeColor = '9B9B9B'
+
 export const serverAddress = 'https://doublecream-server.herokuapp.com/';

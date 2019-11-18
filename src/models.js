@@ -1,5 +1,6 @@
 import axios from 'axios'
 import { serverAddress } from './constants'
+import Popup from './modules'
 
 export const questions = {
   state: [],
@@ -11,22 +12,25 @@ export const questions = {
   },
   effects: (dispatch) => ({ // impure functions
     getAll: (payload, state) => {
-      axios({ // return promise
-        method: 'get',
-        url: serverAddress + '/questions',
-      }).then((response) => { //server send back response
-        dispatch.questions.set(response.data.questions);
-      })
+      callAPI({
+        uri: '/questions',
+        errorHandler: status => status == 404,
+      }).then(response => { //server send back response
+          if (response.status == 200) {
+            dispatch.questions.set(response.data.questions); // data send to payload
+          } else if (response.status == 404) {
+            dispatch.questions.set([]);
+          }
+        })
     },
-
     create: (payload, state) => {
       if (!state.user_token) {
         alert('You have not logged in!');
         return;
       }
-      let request = axios({
+      callAPI({
         method: 'post',
-        url: serverAddress + 'questions',
+        uri: 'questions',
         headers: {
           'Authorization': JSON.stringify({
             user_token: {
@@ -41,30 +45,16 @@ export const questions = {
             content: payload.content
           }
         },
-        validateStatus: (status) => {
-          if (status >= 200 && status < 300 || status >= 400 && status < 500) { //go to resolve
-            return true;
-          } else {
-            return false;
-          }
-        }
-      });
-      request.then((response) => {
-        if (response.status == 201) {
-          payload.success_callback && payload.success_callback();
-          dispatch.questions.getAll();
-        } else {
-          alert('Something expected happened T_T Please contact admin@bigfish.ca.');
-        }
-      }, (response) => {
-        alert('Something expected happened T_T Please contact admin@bigfish.ca.');
+      }).then(response => {
+        payload.success_callback && payload.success_callback();
+        dispatch.questions.getAll();
       })
     }
   })
 }
 
 export const user_token = {
-  state: null,
+  state: JSON.parse(localStorage.getItem('user_token')),
   reducers: {
     set(state, payload) {
       return payload;
@@ -72,37 +62,30 @@ export const user_token = {
   },
   effects: (dispatch) => ({
     create: (payload, state) => {
-      let request = axios({
+      callAPI({
         method: 'post',
-        url: serverAddress + 'user_tokens',
+        uri: 'user_tokens',
         data: {
           credential: {
             email: payload.email,
             password: payload.password,
           }
         },
-        validateStatus: (status) => {
-          if (status >= 200 && status < 300 || status >= 400 && status < 500) { //go to resolve
-            return true;
-          } else {
-            return false;
-          }
-        }
-      });
-      request.then((response) => {
+        errorHandler: status => status == 400,
+      }).then(response => {
         if (response.status == 201) {
           dispatch.user_token.set(response.data.user_token);
+          // html5 
+          localStorage.setItem('user_token', JSON.stringify(response.data.user_token));
           // redirect to questions page
           payload.success_callback && payload.success_callback();
         } else if (response.status == 400) {
           if (response.data.errors[0].code == 'invalid_credential') {
-            alert('Email or password is wrong!');
+            Popup.open('Email or password is wrong!');
           } else {
-            alert('Something expected happened T_T Please contact admin@bigfish.ca.');
+            Popup.open('Something expected happened T_T Please contact admin@bigfish.ca.');
           }
         }
-      }, (response) => {
-        alert('Something expected happened T_T Please contact admin@bigfish.ca.');
       })
     }
   })
@@ -118,9 +101,9 @@ export const users = {
   },
   effects: (dispatch) => ({
     create: (payload, state) => {
-      let request = axios({
+      callAPI({
         method: 'post',
-        url: serverAddress + '/users',
+        uri: '/users',
         data: {
           user: {
             email: payload.email,
@@ -128,30 +111,113 @@ export const users = {
             name: payload.name
           }
         },
-        validateStatus: (status) => {
-          if (status >= 200 && status < 300 || status >= 400 && status < 500) { //go to resolve
-            return true;
-          } else {
-            return false;
-          }
-        }
-      });
-
-      request.then((response) => {
+        errorHandler: status => status == 400,
+      }).then(response => {
         if (response.status == 201) {
           alert('You have signed up!');
           payload.success_callback && payload.success_callback();
           dispatch.users.set(response.data.user);
         } else if (response.status == 400) {
           if (response.data.errors[0].code == 'duplicated_field') {
-            alert('The email has been registered!');
+            Popup.open('The email has been registered!');
           } else {
-            alert('Something expected happened T_T Please contact admin@bigfish.ca.');
+            Popup.open('Something expected happened T_T Please contact admin@bigfish.ca.');
           }
         }
-      }, (response) => {
-        alert('Something expected happened T_T Please contact admin@bigfish.ca.');
       })
+    },
+    async getUser(payload, rootState){
+      const response = await callAPI({
+        uri: `users/${payload}`,
+        headers: {
+          'Authorization': JSON.stringify({
+            user_token: {
+              user_id: rootState.user_token.user_id,
+              key: rootState.user_token.key
+            }
+          })
+        },
+        errorHandler: status => status == 404
+      });
+      if (response.status == 200) {
+        dispatch.users.set(
+          response.data.user
+        )
+      }
     }
+  })
+}
+
+export const answers = {
+  state: {},
+  reducers: {
+    update(state, payload) {
+      return {
+        ...state,
+        ...payload
+      }
+    }
+  },
+  effects: dispatch => ({
+    async getAnswers(payload, rootState) {
+      const response = await callAPI({
+        uri: `questions/${payload}/answers`,
+        headers: {
+          'Authorization': JSON.stringify({
+            user_token: {
+              user_id: rootState.user_token.user_id,
+              key: rootState.user_token.key
+            }
+          })
+        },
+        errorHandler: status => status == 404
+      });
+      if (response.status == 200) {
+        dispatch.answers.update({
+          [payload]: response.data.answers
+        })
+      } else if(response.status == 404) {
+        dispatch.answers.update({});
+      }
+    },
+    async create(payload, rootState) {
+      const response = await callAPI({
+        uri: `questions/${payload.id}/answers`,
+        method: 'post',
+        headers: {
+          'Authorization': JSON.stringify({
+            user_token: {
+              user_id: rootState.user_token.user_id,
+              key: rootState.user_token.key
+            }
+          })
+        },
+        data: {
+          answer: {
+            content: payload.content
+          }
+        }
+      })
+      if (response.status == 201) {
+        payload.hide();
+        dispatch.answers.getAnswers(payload.id);
+      }
+    }
+  })
+}
+
+function callAPI({ method = 'get', uri, errorHandler = () => false, headers, data }) {
+  const request = axios({ // return promise
+    headers,
+    data,
+    method,
+    url: serverAddress + uri,
+    validateStatus: function (status) {
+      return (status >= 200 && status < 300 || errorHandler(status));
+    }
+  })
+  
+  return request.catch((error) => { // catch can return promise
+    Popup.open('Something expected happened T_T Please contact admin@bigfish.ca.');
   })
 }

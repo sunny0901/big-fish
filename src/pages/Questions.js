@@ -1,12 +1,8 @@
 import React, { Component } from 'react'
 import styles from './styles/Questions'
-import Header from '../components/Header'
 import Question from '../components/Question'
-import Seperator from '../components/Seperator'
-import avatar_default from '../assets/images/avatar_default.jpg'
 import { connect } from 'react-redux';
 import { FloatButton } from '../components/Button'
-import { Fragment } from 'react'
 import TextInput from '../components/TextInput'
 import Button from '../components/Button'
 import validate,
@@ -15,6 +11,10 @@ import validate,
     questionTitleLength,
     questionContentLength
 } from '../utils/validations'
+import List from '../components/List'
+import { Switch, Route, withRouter } from 'react-router-dom'
+import Answers from './Answers'
+import WhiteBlank from '../components/WhiteBlank';
 
 class Questions extends Component {
 
@@ -26,44 +26,42 @@ class Questions extends Component {
 
     render() {
         return (
-            <div style={styles.contanier}>
-                <Header avatarSrc={avatar_default} />
+            <>
                 <div style={styles.scrollable}>
-                    {this.props.questions
-                        ? <QuestionList questions={this.props.questions}/>
-                    : null}
+                    <Switch>
+                        <Route path='/questions/:id' component={ Answers }/>
+                        <Route path='/questions' render={() => { return <>
+                        <QuestionList questions={this.props.questions}/>
+                        <FloatButton onClick={() => { this._add_Question_Ref.show() }} />
+                        <AddQuestionContainer userToken={this.props.userToken} ref={this._addQuestionRef} />
+                        </> }} />
+                    </Switch>
                 </div>
-                <FloatButton onClick={() => { this._add_Question_Ref.show() }} />
-                <AddQuestionContainer userToken={this.props.userToken} ref={this._addQuestionRef} />
-            </div>
+            </>
         );
     }
 
     // the viriable _add_Question_Ref can get the reference to the instance of the component
-    _addQuestionRef = (ref) => {
+    _addQuestionRef = ref => {
         this._add_Question_Ref = ref;
     }
 }
 
-function QuestionList(props) {
-    if (props.questions) {
-        var arr_questions = props.questions.map((question) => {
-            return (
-                <Question key={'question_' + question.id} 
-                          title={question.title} 
-                          content={question.content}
+function QuestionList({ questions }) {
+    return (
+        <div style={styles.panel}>
+            <List data={questions} 
+            renderRow={question =>
+                <Question key={'question_' + question.id}
+                    title={question.title}
+                    content={question.content}
+                    id={question.id}
+                    numOfLikes={question.number_of_likes}
                 />
-            )
-        });
-    }
-    let arr_mixed = [];
-    for (let i = 0; i < arr_questions.length - 1; i++) {
-        arr_mixed.push(arr_questions[i]);
-        arr_mixed.push(<Seperator key={'seperator_' + i} />);
-    }
-    arr_mixed.push(arr_questions[arr_questions.length - 1])
-    return <div style={styles.panel}>{ arr_mixed }</div>
-} 
+            } />
+        </div>
+    )
+}
 
 const mapState = state => ({
     questions: state.questions
@@ -73,7 +71,7 @@ const mapDispatch = (dispatch) => ({   //directly return
     getAllQuestions: () => dispatch.questions.getAll(),
 })
 
-export default connect(mapState, mapDispatch)(Questions);
+export default withRouter(connect(mapState, mapDispatch)(Questions));
 
 class AddQuestion extends Component {
 
@@ -85,7 +83,6 @@ class AddQuestion extends Component {
     constructor(props) {
         super(props);
         this.input_value = {};
-
     }
 
     state = {
@@ -95,13 +92,14 @@ class AddQuestion extends Component {
     };
 
     render() {
-        if (!!this.state.visible) {
+        if (this.state.visible) {
             return (
                 <div style={styles.container_addQuestion}
                     onClick={this.hide}>
                     <div style={styles.panel_addQuestion}
                         onClick={(e) => e.stopPropagation()}>
-                        <TextInput id='title' onBlur={this.onBlur} onChange={this.onChange} errMes={this.state['titleErr']} style={{ ...styles.title_add_question, marginBottom: 8 }} placeholder='Title' />
+                        <TextInput id='title' onBlur={this.onBlur} onChange={this.onChange} errMes={this.state['titleErr']} style={styles.title_add_question} placeholder='Title' />
+                        <WhiteBlank h={8}/>
                         <TextInput id='content' onChange={this.onChange} errMes={this.state['contentErr']} style={styles.content_add_question} placeholder='Content' />
                         <Button onClick={this.onSubmit} style={styles.button_add_question} btnText='Ask' />
                     </div>
@@ -170,6 +168,3 @@ const mapDispatchAddQuestion = (dispatch) => ({   //directly return
 })
 
 const AddQuestionContainer = connect(null, mapDispatchAddQuestion, null, { forwardRef: true })(AddQuestion);
-
-
-

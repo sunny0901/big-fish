@@ -52,7 +52,7 @@ const styles = {
         width: 900,
         height: 400,
         backgroundColor: 'white',
-        // styling chiuldren
+        // styling children
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'flex-start',

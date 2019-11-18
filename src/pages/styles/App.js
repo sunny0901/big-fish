@@ -54,4 +54,4 @@ const styles = {
     },
 };
 
-export default styles; //why cant export directly?
+export default styles;

@@ -1,5 +1,4 @@
 
-
 const styles = {
     container: {
         width: 842,
@@ -7,7 +6,6 @@ const styles = {
         display: 'flex',
         flexWrap: 'wrap',
         flexDirection: 'column',
-        //alignItems: 'center',
         justifyContent: 'flex-start'
     },
     title: {

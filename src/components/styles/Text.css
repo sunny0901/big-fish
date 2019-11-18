@@ -1,3 +1,4 @@
+
 .text_base {
     font-size: 25px;
     font-family: Roboto;
@@ -35,7 +36,19 @@
   .light {
     color: #9B9B9B;
   }
+
+  .black {
+    color: black
+  }
   
   .err {
     color: #FF2121;
+  }
+
+  .red {
+    color: #ED5736
+  }
+
+  .white {
+    color: white
   }
