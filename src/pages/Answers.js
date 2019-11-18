@@ -36,7 +36,7 @@ class Answers extends Component {
                     <List data={answers} 
                     renderEmpty={() => <Text type="light">no more answers</Text>}
                     renderRow={answer =>
-                        <Answer key={`answer_${answer.id}`}
+                        <Answer key={'answer_'+answer.id}
                             content={answer.content}
                             createdat={answer.created_at}
                             user_id={answer.user_id}
