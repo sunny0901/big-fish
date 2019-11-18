@@ -1,14 +1,15 @@
 
 const styles = {
     head: {
-        paddingBottom: 5
+        paddingBottom: 5,
+        display: 'flex',
+        justifyContent: 'flex-start'
     },
     image: {
         display: 'inline-block',
         verticalAlign: 'middle',
     },
     userinfo: {
-        paddingLeft: 15,
         display: 'inline-block',
         verticalAlign: 'middle',
     },

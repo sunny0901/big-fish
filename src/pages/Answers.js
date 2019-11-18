@@ -5,7 +5,6 @@ import { connect } from 'react-redux'
 import question_style from './styles/Questions'
 import styles from './styles/Answers'
 import Answer from '../components/Answer'
-import avatar from '../assets/images/avatar_default.jpg'
 import { answerContentLength, isExist } from '../utils/validations'
 import TextInput from '../components/TextInput'
 import Button from '../components/Button'
@@ -40,7 +39,6 @@ class Answers extends Component {
                         <Answer key={`answer_${answer.id}`}
                             content={answer.content}
                             createdat={answer.created_at}
-                            avataurl={avatar}
                             user_id={answer.user_id}
                             numOfLikes={answer.number_of_likes}
                         />} />

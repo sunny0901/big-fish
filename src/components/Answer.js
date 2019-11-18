@@ -10,28 +10,30 @@ export default function Answer(props) {
     const {
         content,
         createdat,
-        avataurl,
         user_id,
         numOfLikes,
     } = props;
 
     return (
         <div>
-        <UserFetcher id={user_id}>
-            { (user) => <>
-            <div style={styles.head}>
-                <Avatar size={63} src={user.avatar_url || avataurl} style={styles.image} />
-                <div style={styles.userinfo}>
-                    <Text>{user.name || 'no name'}</Text>
-                    <WhiteBlank h={5} />
-                    <Text className={'light'}>{`Answered ${format(createdat)}`}</Text>
-                </div>
-            </div>
-            <Text style={styles.content}>{content}</Text>
-            <WhiteBlank h={8} />
-            {numOfLikes != undefined && <Like num={numOfLikes}/>}
-            </> }
-        </ UserFetcher>
+            <UserFetcher id={user_id}>
+                {(user) =>
+                    <>
+                        <div style={styles.head}>
+                            <Avatar size={63} src={user.avatar_url} style={styles.image} />
+                            <WhiteBlank w={14}/>
+                            <div style={styles.userinfo}>
+                                <Text>{user.name || 'no name'}</Text>
+                                <WhiteBlank h={5} />
+                                <Text className={'light'}>{`Answered ${format(createdat)}`}</Text>
+                            </div>
+                        </div>
+                        <Text style={styles.content}>{content}</Text>
+                        <WhiteBlank h={8} />
+                        {numOfLikes != undefined && <Like num={numOfLikes} />}
+                    </>
+                }
+            </ UserFetcher>
         </ div>
     )
 
