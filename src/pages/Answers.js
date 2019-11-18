@@ -34,14 +34,15 @@ class Answers extends Component {
                 <FloatButton style={style.button_add_question} onClick={() => { this._add_Answer_Ref.show() }} />
                 <div style={styles.panel}>
                     <List data={answers} 
-                    renderEmpty={() => <Text type="light">no more answers</Text>}
                     renderRow={answer =>
                         <Answer key={'answer_'+answer.id}
                             content={answer.content}
                             createdat={answer.created_at}
                             user_id={answer.user_id}
                             numOfLikes={answer.number_of_likes}
-                        />} />
+                        />}
+                    renderEmpty={() => <Text type="light">no more answers</Text>}
+                     />
                 </div>
             </>
         )

@@ -7,7 +7,7 @@ import { withRouter } from 'react-router'
 class Header extends Component {
 
     onClick = () => {
-        this.props.history.go(-1);
+        this.props.history.push('/');
     }
 
     render() {
