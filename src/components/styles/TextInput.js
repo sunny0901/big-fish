@@ -4,7 +4,7 @@ import {
 
 const styles = {
     container: {
-        // width: 386,
+        width: 386,
         height: 51,
         display: 'flex',
         flexDirection: 'column',
@@ -12,7 +12,7 @@ const styles = {
         display: 'inline-block',
     },
     input: {
-        // width: 386,
+        width: 386,
         borderWidth: 0,
         fontSize: 25,
         marginBottom: 4.5,
