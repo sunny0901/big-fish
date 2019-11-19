@@ -28,16 +28,17 @@ export default class Question extends Component {
         if (this.state.if_refirect) {
             return <Redirect to={`/questions/${id}`} />;
         }
+
         return (
             <div style={{ ...styles.container, style }}>
-                <Text type='RobotoMedium' style={{ ...styles.title, opacity: this.state.hovered ? 0.5 : 1 }}
+                <Text type='RobotoMedium' style={{ ...styles.title, opacity: this.state.hovered ? 0.5 : 1, display: 'inline' }}
                     onMouseEnter={() => this.setState({ hovered: true })}
                     onMouseLeave={() => this.setState({ hovered: false })}
-                    onClick={ () => this.setState({ if_refirect: true })}>{title}</Text>
-            <WhiteBlank h={8} />
-            <Text style={styles.content}>{content}</Text>
-            <WhiteBlank h={8} />
-                { numOfLikes != undefined && <Like liked={false} num={numOfLikes} /> }
+                    onClick={() => this.setState({ if_refirect: true })}>{title}</Text>
+                <WhiteBlank h={8} />
+                <Text style={styles.content}>{content}</Text>
+                <WhiteBlank h={8} />
+                {numOfLikes != undefined && <Like liked={false} num={numOfLikes} />}
             </div >
         );
     }
