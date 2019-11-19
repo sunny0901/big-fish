@@ -10,6 +10,7 @@ const styles = {
     },
     title: {
         width: 842,
+        cursor: 'pointer',
     },
     content: {
         width: 842,

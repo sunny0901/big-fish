@@ -83,13 +83,12 @@ class AddQuestion extends Component {
     constructor(props) {
         super(props);
         this.input_value = {};
+        this.state = {
+            titleErr: '',
+            contentErr: '',
+            visible: false
+        };
     }
-
-    state = {
-        titleErr: '',
-        contentErr: '',
-        visible: false
-    };
 
     render() {
         if (this.state.visible) {

@@ -8,6 +8,7 @@ const styles = {
         width: 109,
         height: 30,
         borderRadius: 5,
+        cursor: 'point',
         // display children
         display: 'flex',
         justifyContent: 'center',
