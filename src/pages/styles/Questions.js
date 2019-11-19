@@ -58,11 +58,7 @@ const styles = {
         justifyContent: 'flex-start',
         alignItems: 'center',
     },
-    title_add_question: {
-        width: 700,
-        marginTop: 36,
-    },
-    content_add_question: {
+    input_add_question: {
         width: 700,
     },
     button_add_question: {

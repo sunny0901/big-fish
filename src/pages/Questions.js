@@ -98,9 +98,10 @@ class AddQuestion extends Component {
                     onClick={this.hide}>
                     <div style={styles.panel_addQuestion}
                         onClick={(e) => e.stopPropagation()}>
-                        <TextInput id='title' onBlur={this.onBlur} onChange={this.onChange} errMes={this.state['titleErr']} style={styles.title_add_question} placeholder='Title' />
+                        <WhiteBlank h={36}/>
+                        <TextInput id='title' onBlur={this.onBlur} onChange={this.onChange} errMes={this.state['titleErr']} style={styles.input_add_question} placeholder='Title' />
                         <WhiteBlank h={8}/>
-                        <TextInput id='content' onChange={this.onChange} errMes={this.state['contentErr']} style={styles.content_add_question} placeholder='Content' />
+                        <TextInput id='content' onChange={this.onChange} errMes={this.state['contentErr']} style={styles.input_add_question} placeholder='Content' />
                         <Button onClick={this.onSubmit} style={styles.button_add_question} btnText='Ask' />
                     </div>
                 </div>

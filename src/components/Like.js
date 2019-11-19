@@ -14,6 +14,7 @@ const styles = {
         alignItems: 'center'
     }
 }
+
 function Like({ liked, num }) {
     const font_style = liked? 's white': 's red';
     return <div style={styles.container}>
