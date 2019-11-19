@@ -18,7 +18,7 @@ const styles = {
 
 function Like({ liked, num }) {
     const font_style = liked? 's white': 's red';
-    return <div style={styles.container}>
+    return <div className='hover-scale' style={styles.container}>
         <Text type={font_style}>▲</Text>
         <WhiteBlank w={11}/>
         <Text type={font_style}>Agree {num}</Text>

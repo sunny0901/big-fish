@@ -1,9 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
+import './styles/index.css';
 import App from './pages/App';
 import * as serviceWorker from './serviceWorker';
-import './font.css';
+import './styles/font.css';
+import './styles/effects.css'
 import { init } from "@rematch/core";
 import { Provider } from "react-redux";
 import * as models from './models';
