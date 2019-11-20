@@ -177,7 +177,8 @@ export const answers = {
           [payload.question_id]: response.data.answers
         })
       } else if(response.status == 404) {
-        payload.success_callback();
+        console.log(response)
+        !!payload.success_callback && payload.success_callback();
         dispatch.answers.update({});
       }
     },
@@ -201,7 +202,7 @@ export const answers = {
       })
       if (response.status == 201) {
         payload.hide();
-        dispatch.answers.getAnswers(payload.id);
+        dispatch.answers.getAnswers({question_id: payload.id});
       }
     }
   })
@@ -214,7 +215,7 @@ function callAPI({ method = 'get', uri, errorHandler = () => false, headers, dat
     method,
     url: serverAddress + uri,
     validateStatus: function (status) {
-      return (status >= 200 && status < 300 || errorHandler(status));
+      return ((status >= 200 && status < 300) || errorHandler(status));
     }
   })
   
