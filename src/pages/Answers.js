@@ -16,9 +16,22 @@ import Text from '../components/Text'
 
 class Answers extends Component {
 
+    constructor(props) {
+        super(props);
+        this.state = {
+            fetched: false
+        }
+    }
+
+    fetch_success_callback = () => {
+        this.setState({
+            fetched: true
+        })
+    }
+
     componentDidMount() {
         const { match: { params: { id } } } = this.props;
-        this.props.getAllAnswers(id);
+        this.props.getAllAnswers(id, this.fetch_success_callback);
     }
 
     render() {
@@ -41,7 +54,7 @@ class Answers extends Component {
                             user_id={answer.user_id}
                             numOfLikes={answer.number_of_likes}
                         />}
-                    renderEmpty={() => <Text type="light">no more answers</Text>}
+                    renderEmpty={() => { return this.state.fetched? <Text type="light">no more answers</Text> : null}}
                      />
                 </div>
             </>
@@ -59,7 +72,7 @@ const mapState = (state, ownProps) => ({
 });
 
 const mapDispatch = dispatch => ({
-    getAllAnswers: question_id => dispatch.answers.getAnswers(question_id),
+    getAllAnswers: ( question_id, success_callback ) => dispatch.answers.getAnswers({ question_id, success_callback }),
 })
 
 export default connect(mapState, mapDispatch)(Answers);

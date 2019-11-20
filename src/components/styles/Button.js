@@ -12,6 +12,10 @@ const styles = {
         cursor: 'pointer',
         fontSize: 25,
         color: 'white',
+        // styling children
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
     },
     container_float_button: {
         // styling self

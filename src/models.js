@@ -161,7 +161,7 @@ export const answers = {
   effects: dispatch => ({
     async getAnswers(payload, rootState) {
       const response = await callAPI({
-        uri: `questions/${payload}/answers`,
+        uri: `questions/${payload.question_id}/answers`,
         headers: {
           'Authorization': JSON.stringify({
             user_token: {
@@ -174,9 +174,10 @@ export const answers = {
       });
       if (response.status == 200) {
         dispatch.answers.update({
-          [payload]: response.data.answers
+          [payload.question_id]: response.data.answers
         })
       } else if(response.status == 404) {
+        payload.success_callback();
         dispatch.answers.update({});
       }
     },
